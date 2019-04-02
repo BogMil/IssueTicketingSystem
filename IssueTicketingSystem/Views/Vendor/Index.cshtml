@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Vendors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>Vendors</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="vendorJqGridTable"></table>
+        <div id="vendorJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#vendorJqGridTable";
+        var pagerId = "#vendorJqGridPager";
+        var controller = "Vendor";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/AjaxJqGrid",
+                colModel: colModel,
+                pager: pagerId,
+                gridComplete: function () {setMaxHeightForElement(jqGridId);}
+            });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = {};
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function() {},
+            width: width
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width
+
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const Name = {
+            name: "Name",
+            label: "Name",
+            template: textAreaColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const BancAccountNumber = {
+            name: "BancAccountNumber",
+            label: "A/C",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const IFSC = {
+            name: "IFSC",
+            label: "IFSC",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Active = {
+            name: "Active",
+            label: "Active",
+            template: boolColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const ContactNumber = {
+            name: "ContactNumber",
+            label: "Contact",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150,
+            editrules: {
+                required:false
+            }
+        };
+
+        const colModel = [
+            Id,
+            Name,
+            BancAccountNumber,
+            IFSC,
+            ContactNumber,
+            Active,
+
+        ];
+    </script>
+}
+

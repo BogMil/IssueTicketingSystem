@@ -1,0 +1,142 @@
+﻿@*@using System.Web.UI.WebControls
+@model Pokret.Controllers.PodaciNaloga
+
+@{
+    ViewBag.Title = "title";
+}
+
+<div class="container">
+    <div class="row" align="center">
+        <h2>Подаци Налога</h2>
+    </div>
+
+    <div class="row">
+        <h3>Основни подаци</h3>
+    </div>
+
+    <div class="row">
+        @Model.Nalog.Prezime
+    </div>
+    <div class="row">
+        @Model.Nalog.Ime
+    </div>
+    <div class="row">
+        @Model.Nalog.Faksimil
+    </div>
+
+    <div class="row">
+        <h3>Додељене улоге</h3>
+    </div>
+    <div>
+        @foreach (var uloga in Model.UlogeNaloga)
+        {
+            <div class="row">
+                @uloga
+            </div>
+        }
+    </div>
+    <br />
+    <div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#PromenaLozinkeModal">Промени лозинку</button>
+    </div>
+
+    <div class="modal fade" id="PromenaLozinkeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" style="width: 250px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Промена лозинке</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="alert-danger" id="errorMessage" hidden=""></div>
+
+                    <br />
+
+                    <div class="form-group">
+                        @Html.Password("oldPassword", null, new { placeholder = "Тренутна лозинка", Class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Password("newPassword", null, new { placeholder = "Нова лозинка", Class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Password("newPasswordRepeated", null, new { placeholder = "Поновите нову лозинку", Class = "form-control" })
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="PromenaLozinkeSacuvaj" class="btn btn-primary">Сачувај</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function() {
+            $("#PromenaLozinkeSacuvaj").click(SacuvajPromenuLozinke);
+            $("#PromenaLozinkeModal").on('hidden.bs.modal',
+                function() {
+                    $('#errorMessage').html("");
+                    $("#oldPassword").val("");
+                    $("#newPassword").val("");
+                    $("#newPasswordRepeated").val("");
+                });
+        });
+
+        function SacuvajPromenuLozinke() {
+            $("#errorMessage").html("");
+            $("#errorMessage").hide();
+
+            var oldPassword = $("#oldPassword").val();
+            var newPassword = $("#newPassword").val();
+            var newPasswordRepeated = $("#newPasswordRepeated").val();
+
+            if (newPassword !== newPasswordRepeated) {
+                $("#errorMessage").html('Нова лозинка се не поклапа са поновљеном!');
+                $("#errorMessage").show();
+                return;
+            } else {
+                $("#errorMessage").html("");
+                $("#errorMessage").hide();
+            }
+
+            $.ajax({
+                url: "/PodaciNaloga/PromeniLozinku",
+                method:'post',
+                dataType: 'json',
+                data: {
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                    newPasswordRepeated: newPasswordRepeated
+                },
+                success: function (data) {
+                    if (data.hasOwnProperty('error')) {
+                        $("#errorMessage").html(data.error);
+                        $("#errorMessage").show();
+                    }
+                    else {
+                        $("#PromenaLozinkeModal").modal('toggle');
+                        $("#errorMessage").html("");
+                        $("#errorMessage").hide();
+                        alert(data.success);
+                    }
+
+                },
+                error: function() {
+                    alert("greska");
+                }
+        });
+
+        }
+    </script>
+}*@
+

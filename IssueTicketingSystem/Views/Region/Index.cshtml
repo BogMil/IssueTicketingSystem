@@ -1,0 +1,145 @@
+﻿@model IssueTicketingSystem.Models.StateQueryDto
+
+@{
+    ViewBag.Title = "Regions";
+}
+<div>
+    <a style="margin-top:10px" class="btn btn-default" href="/State"><span class="glyphicon glyphicon-menu-left"></span> States</a>
+    <div style="text-align: center; width: 100%">
+        <h2 style="margin-top:0">Regions</h2>
+        <h4>State:@Model.Name</h4>
+        <input id="idState" hidden="hidden" value="@Model.Id"/>
+    </div>
+    <div align="center" style="overflow-x: auto; width: 100%">
+        <table style="margin-left: auto; margin-right: auto;" id="RegionsJqGridTable"></table>
+        <div id="RegionsJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#RegionsJqGridTable";
+        var pagerId = "#RegionsJqGridPager";
+        var controller = "Region";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/RegionsOfState",
+                colModel: colModel,
+                postData: {
+                    idState: $("#idState").val()
+                },
+                pager: pagerId,
+                gridComplete: function () { setMaxHeightForElement(jqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = { view: false };
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function () { },
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdState = $("#idState").val();
+                return [true, ""];
+            },
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdState = $("#idState").val();
+                return [true, ""];
+            },
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const Name = {
+            name: "Name",
+            label: "Name",
+            template: textColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const Actions = {
+            name: "Locations",
+            label: "Locations",
+            formatter: function (cellvalue, option, rowObject) {
+                return '<button style="margin-right:2px;" title="Regions" onClick="openLocations();" class="btn-xsm btn-info"><span class="glyphicon glyphicon-tasks" style="font-size:12px"></span></button>';
+            },
+            editable: false,
+            search: false,
+            colmenu: false,
+            sortable: false,
+            fixed: true,
+            align: 'center',
+            resizable: false,
+            width: 80,
+            viewable: false
+        };
+
+        function openLocations() {
+            setTimeout(function () {
+                var selectedRowData = GetSelectedRowData($(jqGridId));
+                window.location.href = "/Location?IdRegion=" + selectedRowData.Id;
+            });
+        }
+
+        const colModel = [
+            Id,
+            Name,
+            Actions,
+
+        ];
+    </script>
+}
+

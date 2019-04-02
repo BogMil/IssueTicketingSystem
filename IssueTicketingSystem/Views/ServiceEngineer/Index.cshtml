@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "Service Engineer";
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>ServiceEngineers</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="ServiceEngineerJqGridTable"></table>
+        <div id="ServiceEngineerJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#ServiceEngineerJqGridTable";
+        var pagerId = "#ServiceEngineerJqGridPager";
+        var controller = "ServiceEngineer";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/AjaxJqGrid",
+                colModel: colModel,
+                pager: pagerId,
+                gridComplete: function () { setMaxHeightForElement(jqGridId); },
+                subGrid: true,
+                subGridRowExpanded: function (parentRowId, parentRowKey) {
+                    showChildGrid(parentRowId, parentRowKey);
+                },
+            });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = {};
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function () { },
+            width: width
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width
+
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const FirstName = {
+            name: "FirstName",
+            label: "FirstName",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const LastName = {
+            name: "LastName",
+            label: "LastName",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const MiddleName = {
+            name: "MiddleName",
+            label: "MiddleName",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const ContactNumber = {
+            name: "ContactNumber",
+            label: "ContactNumber",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+
+        const IdVendor = {
+            name: "IdVendor",
+            label: "IdVendor",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/ServiceEngineer/VendorSelectOptions"
+            },
+            editrules: {
+                required: false
+            }
+        };
+
+        const Vendor = {
+            name: "Vendor",
+            label: "Vendor",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Active = {
+            name: "Active",
+            label: "Active",
+            template: boolColumn,
+            width: 120,
+            minResizeWidth: 120
+        };
+
+        const colModel = [
+            Id,
+            FirstName,
+            MiddleName,
+            LastName,
+            ContactNumber,
+            IdVendor, Vendor,
+            Active
+        ];
+
+        function showChildGrid(parentRowId, parentRowKey) {
+
+            var childGridId = parentRowId + "_table";
+            var childGridPagerId = parentRowId + "_pager";
+            var childGridUrl = "/ServiceEngineer/ProfessionsOfEngineer?id=" + parentRowKey;
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdServiceEngineer = {
+                name: "IdServiceEngineer",
+                label: "IdServiceEngineer",
+                template: integerColumn,
+                hidden: true,
+                editable: false,
+                editrules: {
+                    edithidden: false
+                },
+                hidedlg: true
+            }
+
+            const IdProfession = {
+                name: "IdTypeOfComplain",
+                label: "Profession",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/ServiceEngineer/ProfessionSelectOptions"
+                },
+                editrules: {
+                    required:true
+                },
+            };
+
+            const Profession = {
+                name: "Profession",
+                label: "Profession",
+                template: textColumn,
+                editable: false,
+                width: 350,
+                minResizeWidth: 350
+            };
+            const subGridColModel = [
+                Id,
+                IdServiceEngineer,
+                IdProfession, Profession
+            ];
+
+            $("#" + parentRowId).append(CreateSubGridTable(childGridId, childGridPagerId));
+
+            $("#" + childGridId).jqGrid({
+                url: childGridUrl,
+                colModel: subGridColModel,
+                pager: "#" + childGridPagerId,
+                pgbuttons: false,
+                pginput: false,
+                rowList: [],
+                viewrecords: false,
+                width: 400,
+                gridComplete: function () {
+                    $("#" + childGridId).closest('div.ui-jqgrid-bdiv').css('max-height', '300px');
+                }
+            });
+
+            var subGridNavgridOptions = {
+                view: false,
+                edit: false
+            };
+
+            var subGridCreateModalOptions = {
+                url: "/ServiceEngineer/AddProfessionToEngineer",
+                beforeShowForm: function (form) {},
+                beforeInitData: function () {
+                    $("#" + childGridId).jqGrid('setColProp',
+                        'IdTypeOfComplain',
+                        {
+                            editoptions: {
+                                dataUrl: "/ServiceEngineer/ProfessionSelectOptions?idServiceEngineer=" + parentRowKey
+                            },
+                        });
+                },
+
+
+                beforeSubmit: function (postData) {
+                    postData.IdServiceEngineer = parentRowKey;
+                    console.log(postData);
+                    return [true, ""];
+                },
+                width: 300
+            };
+
+            var subGridEitModalOptions = {
+            };
+
+            var subGridDeleteModalOptions = {
+                url: "/ServiceEngineer/RemoveProfessionFromEngineer"
+            };
+
+            var subGridSearchModalOptions = {};
+            var subGridViewModalOptions = {};
+
+            $("#" + childGridId).navGrid(
+                "#" + childGridPagerId,
+                subGridNavgridOptions,
+                subGridEitModalOptions,
+                subGridCreateModalOptions,
+                subGridDeleteModalOptions,
+                subGridSearchModalOptions,
+                subGridViewModalOptions
+            );
+
+        }
+    </script>
+}
+

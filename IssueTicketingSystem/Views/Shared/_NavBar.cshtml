@@ -1,0 +1,60 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+
+        <div class="collapse navbar-collapse js-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/Complain">Complains</a>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">code books<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Company"> Companies</a></li>
+                        <li><a href="/Vendor"> Vendors</a></li>
+                        <li><a href="/PartType">Part Types</a></li>
+                        <li><a href="/Unit">Units</a></li>
+                        <li><a href="/Part">Parts</a></li>
+                        <li><a href="/ServiceEngineer">Service Engineers</a></li>
+                        <li><a href="/State">States</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/Account">Accounts</a>
+                </li>
+            </ul>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                
+                <ul class="nav navbar-nav navbar-right pull-right">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">@User.Identity.Name <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @*<li><a href="/PodaciNaloga"><span class="glyphicon glyphicon-cog"></span> Подешавања</a></li>*@
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Sign Out", "SignOut", "Authentication", new { Area = "" }, null)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            }
+
+        </div>
+    </div>
+</nav>
+
+
+
+

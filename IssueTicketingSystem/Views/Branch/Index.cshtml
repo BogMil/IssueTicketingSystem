@@ -1,0 +1,127 @@
+﻿@model IssueTicketingSystem.Controllers.BranchVM
+
+
+@{
+    ViewBag.Title = "Branches";
+}
+<div>
+    <a style="margin-top:10px" class="btn btn-default" href="/Location?idRegion=@Model.Region.Id"><span class="glyphicon glyphicon-menu-left"></span> Locations</a>
+    <div style="text-align: center; width: 100%">
+        <h2 style="margin-top:0">Branches</h2>
+        <h4>
+            <span style="font-size: 12px">State:</span>@Model.State.Name,
+            <span style="font-size: 12px">Region:</span>@Model.Region.Name
+            <span style="font-size: 12px">Location:</span>@Model.Location.Name
+        </h4>
+        <input id="idLocation" hidden="hidden" value="@Model.Location.Id" />
+    </div>
+    <div align="center" style="overflow-x: auto; width: 100%">
+        <table style="margin-left: auto; margin-right: auto;" id="BranchJqGridTable"></table>
+        <div id="BranchJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#BranchJqGridTable";
+        var pagerId = "#BranchJqGridPager";
+        var controller = "Branch";
+        var baseUrl = "/" + controller;
+
+        const IdLocation = $("#idLocation").val();
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/BranchesOfLocation",
+                colModel: colModel,
+                postData: {
+                    idLocation: IdLocation
+                },
+                pager: pagerId,
+                gridComplete: function () { setMaxHeightForElement(jqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = { view: false };
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function () { },
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdLocation = IdLocation ;
+                return [true, ""];
+            },
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdLocation = IdLocation;
+                return [true, ""];
+            },
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const Name = {
+            name: "Name",
+            label: "Name",
+            template: textColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const colModel = [
+            Id,
+            Name
+        ];
+    </script>
+}
+
+

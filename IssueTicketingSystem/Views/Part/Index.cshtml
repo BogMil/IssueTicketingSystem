@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Part Types";
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>Parts</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="PartJqGridTable"></table>
+        <div id="PartJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#PartJqGridTable";
+        var pagerId = "#PartJqGridPager";
+        var controller = "Part";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/AjaxJqGrid",
+                colModel: colModel,
+                pager: pagerId,
+                gridComplete: function() { setMaxHeightForElement(jqGridId); },
+        });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = {};
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function() {},
+            width: width
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width
+
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const Name = {
+            name: "Name",
+            label: "Name",
+            template: textAreaColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const Description = {
+            name: "Description",
+            label: "Description",
+            template: textAreaColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const IdUnit = {
+            name: "IdUnit",
+            label: "IdUnit",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Part/UnitSelectOptions"
+            }
+        };
+
+        const Unit = {
+            name: "Unit",
+            label: "Unit",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const IdPartType = {
+            name: "IdPartType",
+            label: "IdPartType",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Part/PartTypeSelectOptions"
+            }
+        };
+
+        const PartType = {
+            name: "PartType",
+            label: "PartType",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Active = {
+            name: "Active",
+            label: "Active",
+            template: boolColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const colModel = [
+            Id,
+            Name,
+            Description,
+            IdUnit,
+            Unit,
+            IdPartType,
+            PartType,
+            Active
+        ];
+    </script>
+}
+

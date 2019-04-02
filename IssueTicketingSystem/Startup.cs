@@ -1,0 +1,18 @@
+﻿using IssueTicketingSystem;
+using Microsoft.Owin;
+using Owin;
+
+[assembly: OwinStartup(typeof(Startup))]
+namespace IssueTicketingSystem
+{
+    public partial class Startup
+    {
+        public void Configuration(IAppBuilder app)
+        {
+            ConfigureAuth(app);
+            app.MapSignalR();
+
+        }
+
+    }
+}

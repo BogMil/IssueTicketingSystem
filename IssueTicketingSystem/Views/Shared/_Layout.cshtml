@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*jqGrid*@
+    <link href="~/Content/jquery-confirm/jquery-confirm.css" rel="stylesheet" />
+
+    <link href="~/Content/jqGrid/ui.jqgrid-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/datepicker/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/App/notificationBox.css" rel="stylesheet" />
+    <link href="~/Content/App/chat.css" rel="stylesheet" />
+
+</head>
+<body>
+    @Html.Partial("_NavBar")
+    
+
+    <div class="container-fluid" style="padding-top: 50px ; padding-bottom: 0;">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery-confirm/jquery-confirm.js"></script>
+
+    @*jqGrid*@
+    <script src="~/Scripts/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="~/Scripts/jqGrid/jquery.jqGrid.js"></script>
+
+    @* for column reordering *@
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/jqGrid/jquery.contextmenu.js"></script>
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/datepicker/bootstrap-datepicker.en-CA.min.js"></script>
+    <script src="~/Scripts/bootstrap3-typeahead.js"></script>
+    <script src="~/Scripts/jqGridDefaults.js"></script>
+    <script src="~/Scripts/JqGridHeplers.js"></script>
+
+   
+    @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/respond.js"></script>
+    
+    <style>
+        /*word break for data in colum cell*/
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+            height: auto;
+            vertical-align: text-top;
+            padding-top: 2px;
+            word-break: break-all !important;
+        }
+
+        /*word break for data in colum cell*/
+        th.ui-th-column div {
+            white-space: normal !important;
+            height: auto !important;
+            padding-top: 2px;
+            
+        }
+
+        .ui-th-column {
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .ui-th-ltr {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+        }
+    </style>
+    <img hidden id="loadingGif" src="~/Content/App/loading.gif" />
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*jqGrid*@
+    <link href="~/Content/jquery-confirm/jquery-confirm.css" rel="stylesheet" />
+
+    <link href="~/Content/jqGrid/ui.jqgrid-bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/datepicker/bootstrap-datepicker3.css" rel="stylesheet" />
+
+    @*<link href="~/Content/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />*@
+    @*za column chooser*@
+
+</head>
+<body>
+    @*padding mora umesto margine da se ne bi datepicker dislocirao*@
+    <div class="container-fluid" @*style="padding-top: 50px ; padding-bottom: 60px;*@ ">
+        @RenderBody()
+    </div>
+    @*<div id="testFooter">
+            <hr style="margin: 0; padding-bottom: 10px" />
+            <p>&copy; @DateTime.Now.Year - ЦКИСИП</p>
+        </div>*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/report")
+    
+    @*<script src="~/Scripts/bootstrap-select/bootstrap-select.js"></script>*@
+    @*za kolumn chooser*@
+
+
+    @RenderSection("scripts", required: false)
+
+    @*<script src="~/Scripts/Respond/respond.js"></script>
+    <script src="~/Scripts/respond.js"></script>*@
+    <style>
+        /*word break for data in colum cell*/
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+            height: auto;
+            vertical-align: text-top;
+            padding-top: 2px;
+        }
+
+        /*word break for data in colum cell*/
+        th.ui-th-column div {
+            white-space: normal !important;
+            height: auto !important;
+            padding-top: 2px;
+        }
+    </style>
+</body>
+</html>

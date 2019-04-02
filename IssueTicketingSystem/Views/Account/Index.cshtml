@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Accounts";
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>Accounts</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="AccountJqGridTable"></table>
+        <div id="AccountJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+
+
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#AccountJqGridTable";
+        var pagerId = "#AccountJqGridPager";
+        var controller = "Account";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/AjaxJqGrid",
+                colModel: colModel,
+                pager: pagerId,
+                gridComplete: function() { setMaxHeightForElement(jqGridId); },
+                width: 900,
+        });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = {view:false};
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function() {},
+            width: width
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width
+
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const FirstName = {
+            name: "FirstName",
+            label: "First Name",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const LastName = {
+            name: "LastName",
+            label: "Last Name",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Email = {
+            name: "Email",
+            label: "Email",
+            template: textColumn,
+            width: 200,
+            minResizeWidth: 200
+        };
+
+        const IdRole= {
+            name: "IdRole",
+            label: "Role",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Account/RoleSelectOptions"
+            }
+        };
+
+        const Role = {
+            name: "Role",
+            label: "Role",
+            template: textColumn,
+            editable: false,
+            width: 100,
+            minResizeWidth: 100
+        };
+
+        const IdCompany = {
+            name: "IdCompany",
+            label: "IdCompany",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Account/CompanySelectOptions"
+            }
+        };
+
+        const Company= {
+            name: "Company",
+            label: "Company",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Active = {
+            name: "Active",
+            label: "Active",
+            template: boolColumn,
+            width: 120,
+            minResizeWidth: 120
+        };
+
+        const colModel = [
+            Id,
+            FirstName,
+            LastName,
+            Email,
+            IdRole, Role,
+            IdCompany, Company,
+            Active
+        ];
+    </script>
+}
+

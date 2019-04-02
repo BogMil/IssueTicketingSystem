@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <link rel="stylesheet" href="~/Content/jqGridMobile.css/default/jquery.mobile.css" />
+    <link rel="stylesheet" href="~/Content/jqGridMobile.css/ui.jqgrid-mobile.css" />
+
+
+
+    <!-- bellow scripts are not needed in your code. This is a syntax highliher -->
+
+    <link rel="stylesheet" href="~/Content/jqGridMobile.css/shCore.css" />
+    <link rel="stylesheet" href="~/Content/jqGridMobile.css/shThemeDefault.css" />
+
+</head>
+<body>
+    @Html.Partial("_NavBar")
+
+
+    <div class="container-fluid" style="padding-top: 50px ; padding-bottom: 0;">
+        @RenderBody()
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+
+    @*<script src="~/Scripts/jqGridMobile.js/jquery.min.js"></script>*@
+    <script language="javascript" src="~/Scripts/jqGridMobile.js/jquerymobile.jqGrid.min.js" id="s1"></script>
+    <script language="javascript" src="~/Scripts/jqGridMobile.js/i18n/grid.locale-en.js"></script>
+    <script src="~/Scripts/jqGridMobile.js/jquery.mobile.js"></script>
+
+    <script language="javascript" src="~/Scripts/JqGridHeplers.js"></script>
+
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.2.0/xregexp-all.min.js"></script>
+        <script language="javascript" src="~/Scripts/jqGridMobile.js/shCore.js"></script>
+        <script language="javascript" src="~/Scripts/jqGridMobile.js/shAutoloader.js"></script>
+        <script language="javascript" src="~/Scripts/jqGridMobile.js/shLegacy.js"></script>
+        <script language="javascript" src="~/Scripts/jqGridMobile.js/shBrushJScript.js"></script>*@
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

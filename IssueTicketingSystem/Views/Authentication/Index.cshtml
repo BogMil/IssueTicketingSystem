@@ -1,0 +1,61 @@
+﻿@model IssueTicketingSystem.Models.AccountQueryDto
+@{ Layout = "../Shared/_LoginLayout.cshtml";}
+
+<div class="container">
+
+    <div class="panel panel-default" style="margin-top:10vh">
+        <div class="panel-heading">Authenticaiton for Issue Ticketing System</div>
+        
+        <div class="panel-body">
+            @using (Html.BeginForm("Authenticate", "Authentication"))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal container">
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        @if (ViewBag.errorMessage != "" && ViewBag.errorMessage != null)
+                        {
+                            <div class="col-md-offset-2 col-md-6 alert alert-danger" id="errorMessage">
+                                @ViewBag.errorMessage
+                            </div>
+                            <br/><br/>
+                        }
+                        <div class="col-md-offset-2 col-md-6">
+                            @Html.TextBoxFor(model => model.Email, new
+                            {
+                                @class = "form-control",
+                                placeholder = "е-mail"
+                            })
+                        </div><br/><br/>
+                        <div class="col-md-offset-2 col-md-6">
+                            @Html.TextBoxFor(model => model.Password, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Password",
+                                type = "password"
+
+                            })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-6">
+                            <input type="submit" value="Log In" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#errorMessage").fadeOut();
+            }, 1000);
+        });
+    </script>
+}

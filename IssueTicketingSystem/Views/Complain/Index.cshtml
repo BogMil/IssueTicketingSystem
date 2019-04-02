@@ -1,0 +1,363 @@
+﻿
+@{
+    ViewBag.Title = "Complains";
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>Complains</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="ComplainJqGridTable"></table>
+        <div id="ComplainJqGridPager"></div>
+    </div>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#ComplainJqGridTable";
+        var pagerId = "#ComplainJqGridPager";
+        var controller = "Complain";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function () {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/AjaxJqGrid",
+                colModel: colModel,
+                pager: pagerId,
+                gridComplete: function () { setMaxHeightForElement(jqGridId); },
+                shrinkToFit:false,
+                width: 900,
+        });
+
+            $(jqGridId).navGrid(
+                pagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(jqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+
+        });
+
+        const width = 300;
+
+        const navgridOptions = {view:false};
+
+        const createModalOptions = {
+            url: baseUrl + "/AjaxCreate",
+            beforeShowForm: function() {},
+            width: width
+        };
+
+        const editModalOptions = {
+            url: baseUrl + "/AjaxUpdate",
+            width: width,
+            beforeShowForm: function () {
+                var idCompanyBranch = GetSelectedRowData($(jqGridId)).IdCompanyBranch;
+                $.ajax({
+                    url: "/Complain/GetEditSelectValues",
+                    data: { idCompanyBranch: idCompanyBranch },
+                    success: function (result) {
+
+                        populateStateAndSelectValue(result.IdState);
+                        populateRegionAndSelectValue(result.IdState, result.IdRegion);
+                        populateLocationAndSelectValue(result.IdRegion, result.IdLocation);
+                        populateBranchAndSelectValue(result.IdLocation, result.IdBranch);
+                    }
+                });
+            }
+
+        };
+
+        const deleteModalOptions = {
+            url: baseUrl + "/AjaxDelete"
+        };
+
+        const searchModalOptions = {};
+
+        const viewModalOptions = {
+            width: width
+        };
+
+        function populateStateAndSelectValue(idState) {
+            $.ajax({
+                url: "/Company/StateSelectOptions",
+                success: function (result) {
+                    var options = removeSelectTag(result);
+                    $("#IdState").html(options);
+                    $("#IdState").val(idState);
+                }
+            });
+        }
+
+        function populateRegionAndSelectValue(idState, idRegion) {
+            $.ajax({
+                url: "/Company/RegionSelectOptions",
+                data: { idState: idState },
+                success: function (result) {
+                    var options = removeSelectTag(result);
+                    $("#IdRegion").html(options);
+                    $("#IdRegion").val(idRegion);
+
+                }
+            });
+        }
+
+        function populateLocationAndSelectValue(idRegion, idLocation) {
+            $.ajax({
+                url: "/Company/LocationSelectOptions",
+                data: { idRegion: idRegion },
+                success: function (result) {
+                    var options = removeSelectTag(result);
+                    $("#IdLocation").html(options);
+                    $("#IdLocation").val(idLocation);
+                }
+            });
+        }
+
+        function populateBranchAndSelectValue(idLocation, idBranch) {
+            $.ajax({
+                url: "/Company/BranchSelectOptions",
+                data: { idLocation: idLocation },
+                success: function (result) {
+                    var options = removeSelectTag(result);
+                    $("#IdBranch").html(options);
+                    $("#IdBranch").val(idBranch);
+                }
+            });
+        }
+
+        //
+        const State = {
+            name: "IdState",
+            label: "State",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Company/StateSelectOptions",
+                dataInit: function (elem) {
+                    $(elem).attr('id', 'IdState');
+                },
+                dataEvents: [
+                    {
+                        type: 'change',
+                        fn: function (e) {
+                            var idState = e.target.value;
+                            if (idState) {
+                                $.ajax({
+                                    url: "/Company/RegionSelectOptions",
+                                    data: { idState: idState },
+                                    success: function (result) {
+                                        var options = removeSelectTag(result);
+                                        $("#IdRegion").html(options);
+                                        $("#IdLocation").html("<option>-</option");
+                                        $("#IdBranch").html("<option>-</option");
+                                    }
+                                });
+                            } else {
+                                $("#IdRegion").html("<option>-</option");
+                                $("#IdLocation").html("<option>-</option");
+                                $("#IdBranch").html("<option>-</option");
+
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+
+        const Region = {
+            name: "IdRegion",
+            label: "Region",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Company/Empty",
+                dataInit: function (elem) {
+                    $(elem).attr('id', 'IdRegion');
+                },
+                dataEvents: [
+                    {
+                        type: 'change',
+                        fn: function (e) {
+                            var idRegion = e.target.value;
+                            if (idRegion) {
+                                $.ajax({
+                                    url: "/Company/LocationSelectOptions",
+                                    data: { idRegion: idRegion },
+                                    success: function (result) {
+                                        var options = removeSelectTag(result);
+                                        $("#IdLocation").html(options);
+                                        $("#IdBranch").html("<option>-</option");
+                                    }
+                                });
+                            } else {
+                                $("#IdLocation").html("<option>-</option");
+                                $("#IdBranch").html("<option>-</option");
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+
+        const Location = {
+            name: "IdLocation",
+            label: "Location",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Company/Empty",
+                dataInit: function (elem) {
+                    $(elem).attr('id', 'IdLocation');
+                },
+                dataEvents: [
+                    {
+                        type: 'change',
+                        fn: function (e) {
+                            var idLocation = e.target.value;
+                            if (idLocation) {
+                                $.ajax({
+                                    url: "/Company/BranchSelectOptions",
+                                    data: { idLocation: idLocation },
+                                    success: function (result) {
+                                        var options = removeSelectTag(result);
+                                        $("#IdBranch").html(options);
+                                    }
+                                });
+                            } else {
+                                $("#IdBranch").html("<option>-</option");
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+        //
+
+        const Id = {
+            name: "Id",
+            template: primaryKeyColumn,
+        };
+
+        const IdTypeOfComplain = {
+            name: "IdTypeOfComplain",
+            label: "Complain Type",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Complain/TypeOfComplainSelectOptions"
+            }
+        };
+        
+        const TypeOfComplain= {
+            name: "TypeOfComplain",
+            label: "Complain Type",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const IdCompanyBranch = {
+            name: "IdCompanyBranch",
+            label: "Company Branch",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Complain/CompanyBranchSelectOptions"
+            }
+        };
+
+        const CompanyBranch = {
+            name: "CompanyBranch",
+            label: "Address",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Company = {
+            name: "Company",
+            label: "Company",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150,
+            editable: false
+        };
+
+        const Status = {
+            name: "Status",
+            label: "Status",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150,
+            editable:false
+        };
+
+        const CustomerWhoRaisedIssue= {
+            name: "CustomerWhoRaisedIssue",
+            label: "Customer",
+            template: textColumn,
+            width: 200,
+            minResizeWidth: 200,
+            editable:false
+        };
+
+        const Aging = {
+            name: "Aging",
+            label: "Aging",
+            template: textColumn,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        const Remark = {
+            name: "Remark",
+            label: "Remark",
+            template: textAreaColumn,
+            width: 200,
+            minResizeWidth: 200
+        };
+
+        const RequstedDate = {
+            name: "RequstedDate",
+            label: "Requsted Date",
+            template: dateColumn,
+            editable:false
+        };
+
+        const ClosingDate = {
+            name: "ClosingDate",
+            label: "Closing Date",
+            template: dateColumn,
+        };
+
+        const colModel = [
+            Id,
+            Status,
+            IdCompanyBranch, CompanyBranch,
+            IdTypeOfComplain, TypeOfComplain,
+            Company,
+            ClosingDate,
+            Aging,
+            Remark,
+            CustomerWhoRaisedIssue,
+            RequstedDate,
+        ];
+    </script>
+}
+

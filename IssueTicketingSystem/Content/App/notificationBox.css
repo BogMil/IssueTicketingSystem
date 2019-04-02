@@ -1,0 +1,41 @@
+﻿.notificationBox {
+    width: 300px;
+    height: 200px;
+    background-color: #d3d3d3;
+    position: fixed;
+}
+
+    .notificationBox ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .notificationBox ::-webkit-scrollbar-thumb {
+        /*background-color: #888;*/
+        background-color: #a8a8a8;
+    }
+
+.notificationHeader {
+    background-color: #a8a8a8;
+    height: 22px;
+}
+
+.notificationHeaderText {
+    padding-left: 2px;
+}
+
+.notificationContent {
+    padding: 5px;
+    overflow: auto;
+    height: 178px;
+}
+
+.notificationCloseButton {
+    border-radius: 0;
+    background-color: transparent;
+    /*background-color: #696969;*/
+}
+.notificationCloseButton:hover {
+    /*border-radius: 0;
+    background-color: transparent;*/
+    background-color: #696969;
+}
