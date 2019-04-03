@@ -43,5 +43,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        var companyBranch = Repository.Find(idBranch);
 	        return Mapper.Map<tbl_branch, CompanyBranchEditSelectValue>(companyBranch);
 	    }
-    }
+
+	    public string NullableBranchSelectOptionsForCustomersCompany(int idLocation, int idCompany)
+	    {
+	        var selectListItems = Repository.BranchSelectOptionsForCustomersCompany(idLocation, idCompany);
+	        return DropDownCreator.CreateNullable(selectListItems, "-");
+        }
+	}
 }

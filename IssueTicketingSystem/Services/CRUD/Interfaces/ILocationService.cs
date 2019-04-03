@@ -12,5 +12,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	    string LocationSelectOptions(int idRegion);
 	    string NullableLocationSelectOptions(int idRegion);
 
+	    string NullableLocationSelectOptionsForCustomersCompany(int idRegion, int idCompany);
 	}
 }

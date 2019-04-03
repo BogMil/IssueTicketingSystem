@@ -24,5 +24,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        var sli = Repository.StateSelectOptions();
 	        return DropDownCreator.CreateNullable(sli,"-");
 	    }
-    }
+
+	    public string NullableStateSelectOptionsForCustomersCompany(int idCompany)
+	    {
+	        var sli = Repository.StateSelectOptionsForCustomersCompany(idCompany);
+	        return DropDownCreator.CreateNullable(sli, "-");
+        }
+	}
 }

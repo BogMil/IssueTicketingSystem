@@ -98,7 +98,7 @@
 
         function populateStateAndSelectValue(idState) {
             $.ajax({
-                url: "/Company/StateSelectOptions",
+                url: "/Complain/StateSelectOptions",
                 success: function (result) {
                     var options = removeSelectTag(result);
                     $("#IdState").html(options);
@@ -109,7 +109,7 @@
 
         function populateRegionAndSelectValue(idState, idRegion) {
             $.ajax({
-                url: "/Company/RegionSelectOptions",
+                url: "/Complain/RegionSelectOptions",
                 data: { idState: idState },
                 success: function (result) {
                     var options = removeSelectTag(result);
@@ -122,7 +122,7 @@
 
         function populateLocationAndSelectValue(idRegion, idLocation) {
             $.ajax({
-                url: "/Company/LocationSelectOptions",
+                url: "/Complain/LocationSelectOptions",
                 data: { idRegion: idRegion },
                 success: function (result) {
                     var options = removeSelectTag(result);
@@ -134,7 +134,7 @@
 
         function populateBranchAndSelectValue(idLocation, idBranch) {
             $.ajax({
-                url: "/Company/BranchSelectOptions",
+                url: "/Complain/BranchSelectOptions",
                 data: { idLocation: idLocation },
                 success: function (result) {
                     var options = removeSelectTag(result);
@@ -150,7 +150,7 @@
             label: "State",
             template: SelectForCreateOrUpdate,
             editoptions: {
-                dataUrl: "/Company/StateSelectOptions",
+                dataUrl: "/Complain/StateSelectOptions",
                 dataInit: function (elem) {
                     $(elem).attr('id', 'IdState');
                 },
@@ -161,20 +161,21 @@
                             var idState = e.target.value;
                             if (idState) {
                                 $.ajax({
-                                    url: "/Company/RegionSelectOptions",
+                                    url: "/Complain/RegionSelectOptions",
                                     data: { idState: idState },
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdRegion").html(options);
                                         $("#IdLocation").html("<option>-</option");
                                         $("#IdBranch").html("<option>-</option");
+                                        $("#IdCompanyBranch").html("<option>-</option");
                                     }
                                 });
                             } else {
                                 $("#IdRegion").html("<option>-</option");
                                 $("#IdLocation").html("<option>-</option");
                                 $("#IdBranch").html("<option>-</option");
-
+                                $("#IdCompanyBranch").html("<option>-</option");
                             }
                         }
                     }
@@ -187,7 +188,7 @@
             label: "Region",
             template: SelectForCreateOrUpdate,
             editoptions: {
-                dataUrl: "/Company/Empty",
+                dataUrl: "/Complain/Empty",
                 dataInit: function (elem) {
                     $(elem).attr('id', 'IdRegion');
                 },
@@ -198,17 +199,19 @@
                             var idRegion = e.target.value;
                             if (idRegion) {
                                 $.ajax({
-                                    url: "/Company/LocationSelectOptions",
+                                    url: "/Complain/LocationSelectOptions",
                                     data: { idRegion: idRegion },
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdLocation").html(options);
                                         $("#IdBranch").html("<option>-</option");
+                                        $("#IdCompanyBranch").html("<option>-</option");
                                     }
                                 });
                             } else {
                                 $("#IdLocation").html("<option>-</option");
                                 $("#IdBranch").html("<option>-</option");
+                                $("#IdCompanyBranch").html("<option>-</option");
                             }
                         }
                     }
@@ -221,7 +224,7 @@
             label: "Location",
             template: SelectForCreateOrUpdate,
             editoptions: {
-                dataUrl: "/Company/Empty",
+                dataUrl: "/Complain/Empty",
                 dataInit: function (elem) {
                     $(elem).attr('id', 'IdLocation');
                 },
@@ -232,21 +235,56 @@
                             var idLocation = e.target.value;
                             if (idLocation) {
                                 $.ajax({
-                                    url: "/Company/BranchSelectOptions",
+                                    url: "/Complain/BranchSelectOptions",
                                     data: { idLocation: idLocation },
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdBranch").html(options);
+                                        $("#IdCompanyBranch").html("<option>-</option");
                                     }
                                 });
                             } else {
                                 $("#IdBranch").html("<option>-</option");
+                                $("#IdCompanyBranch").html("<option>-</option");
                             }
                         }
                     }
                 ]
             }
         };
+
+        const Branch = {
+            name: "IdBranch",
+            label: "Branch",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Company/Empty",
+                dataInit: function (elem) {
+                    $(elem).attr('id', 'IdBranch');
+                },
+                dataEvents: [
+                    {
+                        type: 'change',
+                        fn: function (e) {
+                            var idBranch = e.target.value;
+                            if (idBranch) {
+                                $.ajax({
+                                    url: "/Complain/CompanyBranchSelectOptions",
+                                    data: { idBranch: idBranch },
+                                    success: function (result) {
+                                        var options = removeSelectTag(result);
+                                        $("#IdCompanyBranch").html(options);
+                                    }
+                                });
+                            } else {
+                                $("#IdCompanyBranch").html("<option>-</option");
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+
         //
 
         const Id = {
@@ -277,7 +315,7 @@
             label: "Company Branch",
             template: SelectForCreateOrUpdate,
             editoptions: {
-                dataUrl: "/Complain/CompanyBranchSelectOptions"
+                dataUrl: "/Complain/Empty"
             }
         };
 
@@ -349,6 +387,7 @@
         const colModel = [
             Id,
             Status,
+            State,Region,Location,Branch,
             IdCompanyBranch, CompanyBranch,
             IdTypeOfComplain, TypeOfComplain,
             Company,

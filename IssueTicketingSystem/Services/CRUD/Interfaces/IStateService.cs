@@ -8,5 +8,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	    string StateSelectOptions();
 	    string NullableStateSelectOptions();
 
+	    string NullableStateSelectOptionsForCustomersCompany(int idCompany);
 	}
 }

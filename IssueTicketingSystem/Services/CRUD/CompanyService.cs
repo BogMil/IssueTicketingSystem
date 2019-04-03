@@ -33,5 +33,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        return Mapper.Map<IPagedList<tbl_company_branch>, StaticPagedList<CompanyBranchQueryDto>>((PagedList<tbl_company_branch>)entities);
 
         }
+
+	    public string CompanyBranchSelectOptionsForCustomersCompany(int idBranch, int idCompany)
+	    {
+	        var selectListItems = Repository.CompanyBranchSelectOptionsForCustomersCompany(idBranch, idCompany);
+	        return DropDownCreator.CreateNullable(selectListItems, "-");
+        }
 	}
 }

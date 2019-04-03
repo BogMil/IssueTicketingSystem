@@ -28,5 +28,22 @@ namespace IssueTicketingSystem.Repositories
 	            .OrderBy(x=>x.Text)
 	            .ToList();
 	    }
+
+	    public List<SelectListItem> BranchSelectOptionsForCustomersCompany(int idLocation, int idCompany)
+	    {
+	        return Db.tbl_company_branch
+	            .Where(x => x.IdCompany == idCompany)
+	            .Where(x => x.tbl_branch.IdLocation== idLocation)
+	            .Where(x =>x.Active)
+                .Select(x =>
+	                new SelectListItem
+	                {
+	                    Text = x.tbl_branch.Name,
+	                    Value = x.tbl_branch.Id.ToString()
+	                })
+	            .Distinct()
+	            .OrderBy(x => x.Text)
+	            .ToList();
+        }
 	}
 }

@@ -10,5 +10,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	{
 	    string CompanySelectOptions();
 	    StaticPagedList<CompanyBranchQueryDto> BranchOfficesOfCompany(int idCompany, Pager pager, OrderByProperties orderByProperties, string filters);
+	    string CompanyBranchSelectOptionsForCustomersCompany(int idBranch, int idCompany);
 	}
 }

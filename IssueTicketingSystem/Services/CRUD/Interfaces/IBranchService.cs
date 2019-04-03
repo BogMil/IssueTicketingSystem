@@ -13,5 +13,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	    string NullableBranchSelectOptions(int idLocation);
 
 	    CompanyBranchEditSelectValue GetEditSelectValues(int idBranch);
-    }
+	    string NullableBranchSelectOptionsForCustomersCompany(int idLocation, int idCompany);
+	}
 }

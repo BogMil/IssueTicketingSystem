@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	public interface IRegionRepository : IGenericRepository<tbl_region>
 	{
 	    List<SelectListItem> RegionSelectOptions(int idState);
+	    List<SelectListItem> RegionSelectOptionsForCustomersCompany(int idState, int idCompany);
 	}
 }

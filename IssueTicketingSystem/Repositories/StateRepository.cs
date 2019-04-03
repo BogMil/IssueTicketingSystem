@@ -30,8 +30,25 @@ namespace IssueTicketingSystem.Repositories
 	    public List<SelectListItem> StateSelectOptions()
 	    {
 	        return Db.tbl_state
-	            .OrderBy(x=>x.Name)
 	            .Select(x => new SelectListItem {Text = x.Name, Value = x.Id.ToString()})
+	            .Distinct()
+	            .OrderBy(x => x.Text)
+                .ToList();
+	    }
+
+	    public List<SelectListItem> StateSelectOptionsForCustomersCompany(int idCompany)
+	    {
+	        return Db.tbl_company_branch
+	            .Where(x=>x.IdCompany==idCompany)
+	            .Where(x =>x.Active)
+	            .Select(x =>
+	                new SelectListItem
+	                {
+	                    Text = x.tbl_branch.tbl_location.tbl_region.tbl_state.Name,
+	                    Value = x.tbl_branch.tbl_location.tbl_region.tbl_state.Id.ToString()
+	                })
+	            .Distinct()
+	            .OrderBy(x => x.Text)
 	            .ToList();
 	    }
 	}

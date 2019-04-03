@@ -36,5 +36,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        var sli = Repository.LocationSelectOptions(idRegion);
 	        return DropDownCreator.CreateNullable(sli,"-");
 	    }
-    }
+
+	    public string NullableLocationSelectOptionsForCustomersCompany(int idRegion, int idCompany)
+	    {
+	        var sli = Repository.LocationSelectOptionsForCustomersCompany(idRegion, idCompany);
+	        return DropDownCreator.CreateNullable(sli, "-");
+        }
+	}
 }

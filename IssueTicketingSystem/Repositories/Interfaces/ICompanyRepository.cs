@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	public interface ICompanyRepository : IGenericRepository<tbl_company>
 	{
 	    List<SelectListItem> CompanySelectOptions();
+	    List<SelectListItem> CompanyBranchSelectOptionsForCustomersCompany(int idBranch, int idCompany);
 	}
 }

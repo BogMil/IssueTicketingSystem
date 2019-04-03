@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	public interface IBranchRepository : IGenericRepository<tbl_branch>
 	{
 	    List<SelectListItem> BranchSelectOptions(int idLocation);
+	    List<SelectListItem> BranchSelectOptionsForCustomersCompany(int idLocation, int idCompany);
 	}
 }
