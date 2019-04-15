@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	public interface IVendorRepository : IGenericRepository<tbl_vendor>
 	{
 	    List<SelectListItem> VendorSelectOptions();
+	    List<SelectListItem> VendorToPaySelectOption(int idComplainIssue);
 	}
 }

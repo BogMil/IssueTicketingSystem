@@ -84,6 +84,21 @@ namespace IssueTicketingSystem
             container.RegisterType<ICompanyBranchRepository, CompanyBranchRepository>();
             container.RegisterType<ICompanyBranchService, CompanyBranchService>();
 
+            container.RegisterType<IComplainIssueRepository, ComplainIssueRepository>();
+            container.RegisterType<IComplainIssueService, ComplainIssueService>();
+
+            container.RegisterType<IAssignmentRepository, AssignmentRepository>();
+            container.RegisterType<IAssignmentService, AssignmentService>();
+
+            container.RegisterType<IReplacementRepository, ReplacementRepository>();
+            container.RegisterType<IReplacementService, ReplacementService>();
+
+            container.RegisterType<IRepairmentRepository, RepairmentRepository>();
+            container.RegisterType<IRepairmentService, RepairmentService>();
+
+            container.RegisterType<IVendorPaymentRepository, VendorPaymentRepository>();
+            container.RegisterType<IVendorPaymentService, VendorPaymentService>();
+
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

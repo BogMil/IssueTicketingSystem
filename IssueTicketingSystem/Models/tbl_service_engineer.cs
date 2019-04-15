@@ -18,7 +18,6 @@ namespace IssueTicketingSystem.Models
         public tbl_service_engineer()
         {
             this.tbl_assigned_service_engineer_to_issue = new HashSet<tbl_assigned_service_engineer_to_issue>();
-            this.tbl_assigned_service_engineer_to_issue1 = new HashSet<tbl_assigned_service_engineer_to_issue>();
             this.tbl_engineer_profession = new HashSet<tbl_engineer_profession>();
         }
     
@@ -32,8 +31,6 @@ namespace IssueTicketingSystem.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_assigned_service_engineer_to_issue> tbl_assigned_service_engineer_to_issue { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_assigned_service_engineer_to_issue> tbl_assigned_service_engineer_to_issue1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_engineer_profession> tbl_engineer_profession { get; set; }
         public virtual tbl_vendor tbl_vendor { get; set; }

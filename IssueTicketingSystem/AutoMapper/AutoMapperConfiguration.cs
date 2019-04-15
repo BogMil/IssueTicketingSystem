@@ -30,6 +30,12 @@ namespace IssueTicketingSystem.AutoMapper
                     cfg.AddProfile<PaymentStatusMappingProfile>();
                     cfg.AddProfile<ComplainMappingProfile>();
                     cfg.AddProfile<CompanyBranchMappingProfile>();
+                    cfg.AddProfile<ComplainIssueMappingProfile>();
+                    cfg.AddProfile<AssignmentMappingProfile>();
+                    cfg.AddProfile<ReplacementMappingProfile>();
+                    cfg.AddProfile<RepairmentMappingProfile>();
+                    cfg.AddProfile<VendorPaymentMappingProfile>();
+                    
                 }
             );
             config.AssertConfigurationIsValid();

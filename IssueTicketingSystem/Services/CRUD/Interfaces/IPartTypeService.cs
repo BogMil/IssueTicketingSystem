@@ -5,6 +5,7 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 {
 	public interface IPartTypeService : IGenericService<PartTypeQueryDto,PartTypeCommandDto>
 	{
-
+	    string PartTypeSelectOptions();
+	    string PartTypeThatHavePartsSelectOption();
 	}
 }

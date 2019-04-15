@@ -3,11 +3,15 @@ using GenericCSR.Controller;
 using System.Web.Mvc;
 using GenericCSR;
 using GenericCSR.Sorter;
+using IssueTicketingSystem.Filters;
 using IssueTicketingSystem.Models;
 using IssueTicketingSystem.Services.CRUD.Interfaces;
 
 namespace IssueTicketingSystem.Controllers
 {
+    [AuthorizeRoles(
+        CustomRoles.Administrator
+    )]
     public class LocationController :
             GenericController<ILocationService, LocationViewModel, LocationQueryDto, LocationCommandDto>
     {

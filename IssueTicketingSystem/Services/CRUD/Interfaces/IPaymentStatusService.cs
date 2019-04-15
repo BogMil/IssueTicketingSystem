@@ -5,6 +5,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 {
 	public interface IPaymentStatusService : IGenericService<PaymentStatusQueryDto,PaymentStatusCommandDto>
 	{
-
+	    string PaymentStatusSelectOptions();
 	}
 }

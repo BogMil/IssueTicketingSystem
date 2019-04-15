@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Web.Mvc;
+using System.Web.Security;
 using IssueTicketingSystem.Services;
 
 namespace IssueTicketingSystem.Controllers
@@ -15,6 +18,10 @@ namespace IssueTicketingSystem.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            var userIdentity = (ClaimsIdentity)User.Identity;
+            var claims = userIdentity.Claims;
+            var roleClaimType = userIdentity.RoleClaimType;
+            var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
             return View();

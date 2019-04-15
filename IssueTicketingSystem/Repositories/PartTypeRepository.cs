@@ -26,6 +26,15 @@ namespace IssueTicketingSystem.Repositories
 	            .ToList();
 	    }
 
+	    public List<SelectListItem> PartTypeThatHavePartsSelectOption()
+	    {
+	        return Db.tbl_part_types
+	            .Where(x=>x.tbl_part.Count>0)
+	            .OrderBy(x => x.Name)
+	            .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })
+	            .ToList();
+        }
+
 	    protected override void ShouldDeleteEntity(tbl_part_types entity)
 	    {
 	        if(entity.tbl_part.Count>0)

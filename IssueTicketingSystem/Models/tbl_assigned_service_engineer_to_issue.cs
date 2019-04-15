@@ -17,12 +17,10 @@ namespace IssueTicketingSystem.Models
         public int Id { get; set; }
         public int IdServiceEngineer { get; set; }
         public int IdIssue { get; set; }
-        public int IdServiceEngineerReplacedBy { get; set; }
         public string Remark { get; set; }
         public Nullable<bool> PreventedFromWorking { get; set; }
     
         public virtual tbl_complain_issue tbl_complain_issue { get; set; }
         public virtual tbl_service_engineer tbl_service_engineer { get; set; }
-        public virtual tbl_service_engineer tbl_service_engineer1 { get; set; }
     }
 }

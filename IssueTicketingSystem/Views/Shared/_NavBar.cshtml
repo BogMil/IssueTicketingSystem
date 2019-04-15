@@ -8,31 +8,39 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
+            @Html.ActionLink("ITS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         </div>
 
         <div class="collapse navbar-collapse js-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="/Complain">Complains</a>
-                </li>
+            @if (User.HasAnyOfRoles(CustomRoles.User, CustomRoles.Customer, CustomRoles.Administrator))
+            {
+                <li><a href="/Complain">Complains</a></li>
+            }
+
+            @if (User.IsInRole(CustomRoles.Administrator))
+            {
+                <li><a href="/Company"> Companies</a></li>
+
+                <li><a href="/Vendor"> Vendors</a></li>
+
+                <li><a href="/ServiceEngineer">Service Engineers</a></li>
 
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">code books<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/Company"> Companies</a></li>
-                        <li><a href="/Vendor"> Vendors</a></li>
-                        <li><a href="/PartType">Part Types</a></li>
-                        <li><a href="/Unit">Units</a></li>
-                        <li><a href="/Part">Parts</a></li>
-                        <li><a href="/ServiceEngineer">Service Engineers</a></li>
+
                         <li><a href="/State">States</a></li>
+                        <li><a href="/PartType">Part Types</a></li>
+                        <li><a href="/Part">Parts</a></li>
+                        <li><a href="/Unit">Units</a></li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="/Account">Accounts</a>
                 </li>
+            }
             </ul>
 
             @if (User.Identity.IsAuthenticated)

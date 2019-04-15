@@ -77,7 +77,6 @@ namespace IssueTicketingSystem.Models
             CreateMap<ServiceEngineerCommandDto, tbl_service_engineer>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.id))
                 .ForMember(d => d.tbl_assigned_service_engineer_to_issue, o => o.Ignore())
-                .ForMember(d => d.tbl_assigned_service_engineer_to_issue1, o => o.Ignore())
                 .ForMember(d => d.tbl_vendor, o => o.Ignore())
                 .ForMember(d => d.tbl_engineer_profession, o => o.Ignore());
 

@@ -17,6 +17,7 @@ namespace IssueTicketingSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbl_part()
         {
+            this.tbl_repairment = new HashSet<tbl_repairment>();
             this.tbl_replacement = new HashSet<tbl_replacement>();
         }
     
@@ -29,6 +30,8 @@ namespace IssueTicketingSystem.Models
     
         public virtual tbl_part_types tbl_part_types { get; set; }
         public virtual tbl_unit tbl_unit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbl_repairment> tbl_repairment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_replacement> tbl_replacement { get; set; }
     }

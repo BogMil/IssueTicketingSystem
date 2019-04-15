@@ -12,5 +12,11 @@ namespace IssueTicketingSystem.Services.CRUD
         {
 
         }
+
+	    public string PaymentStatusSelectOptions()
+	    {
+	        var sli = Repository.PaymentStatusSelectOptions();
+	        return DropDownCreator.Create(sli);
+	    }
 	}
 }

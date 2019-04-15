@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="IssueTicketingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="IssueTicketingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -46,7 +46,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdServiceEngineer" Type="int" Nullable="false" />
           <Property Name="IdIssue" Type="int" Nullable="false" />
-          <Property Name="IdServiceEngineerReplacedBy" Type="int" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="PreventedFromWorking" Type="bit" />
         </EntityType>
@@ -98,7 +97,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Subject" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Desctiption" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="DateFixed" Type="date" />
           <Property Name="Replaced" Type="bit" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
@@ -167,6 +166,16 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IdState" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_repairment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="IdComplainIssue" Type="int" Nullable="false" />
+          <Property Name="IdPart" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_replacement">
           <Key>
@@ -327,18 +336,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1">
-          <End Role="tbl_service_engineer" Type="Self.tbl_service_engineer" Multiplicity="1" />
-          <End Role="tbl_assigned_service_engineer_to_issue" Type="Self.tbl_assigned_service_engineer_to_issue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_service_engineer">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_assigned_service_engineer_to_issue">
-              <PropertyRef Name="IdServiceEngineerReplacedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbl_branch_tbl_location">
           <End Role="tbl_location" Type="Self.tbl_location" Multiplicity="1" />
           <End Role="tbl_branch" Type="Self.tbl_branch" Multiplicity="*" />
@@ -507,6 +504,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_repairment_tbl_complain_issue">
+          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
+          <End Role="tbl_repairment" Type="Self.tbl_repairment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_complain_issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_repairment">
+              <PropertyRef Name="IdComplainIssue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_repairment_tbl_part">
+          <End Role="tbl_part" Type="Self.tbl_part" Multiplicity="1" />
+          <End Role="tbl_repairment" Type="Self.tbl_repairment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_repairment">
+              <PropertyRef Name="IdPart" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_replacement_tbl_complain_issue">
           <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
           <End Role="tbl_replacement" Type="Self.tbl_replacement" Multiplicity="*" />
@@ -609,6 +630,7 @@
           <EntitySet Name="tbl_part_types" EntityType="Self.tbl_part_types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_payment_status" EntityType="Self.tbl_payment_status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_region" EntityType="Self.tbl_region" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_repairment" EntityType="Self.tbl_repairment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_replacement" EntityType="Self.tbl_replacement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_roles" EntityType="Self.tbl_roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_service_engineer" EntityType="Self.tbl_service_engineer" Schema="dbo" store:Type="Tables" />
@@ -642,10 +664,6 @@
             <End Role="tbl_assigned_service_engineer_to_issue" EntitySet="tbl_assigned_service_engineer_to_issue" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer" Association="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer">
-            <End Role="tbl_service_engineer" EntitySet="tbl_service_engineer" />
-            <End Role="tbl_assigned_service_engineer_to_issue" EntitySet="tbl_assigned_service_engineer_to_issue" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1" Association="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1">
             <End Role="tbl_service_engineer" EntitySet="tbl_service_engineer" />
             <End Role="tbl_assigned_service_engineer_to_issue" EntitySet="tbl_assigned_service_engineer_to_issue" />
           </AssociationSet>
@@ -705,6 +723,14 @@
             <End Role="tbl_state" EntitySet="tbl_state" />
             <End Role="tbl_region" EntitySet="tbl_region" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbl_repairment_tbl_complain_issue" Association="Self.FK_tbl_repairment_tbl_complain_issue">
+            <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
+            <End Role="tbl_repairment" EntitySet="tbl_repairment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_repairment_tbl_part" Association="Self.FK_tbl_repairment_tbl_part">
+            <End Role="tbl_part" EntitySet="tbl_part" />
+            <End Role="tbl_repairment" EntitySet="tbl_repairment" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbl_replacement_tbl_complain_issue" Association="Self.FK_tbl_replacement_tbl_complain_issue">
             <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
             <End Role="tbl_replacement" EntitySet="tbl_replacement" />
@@ -734,7 +760,8 @@
             <End Role="tbl_vendor_payment" EntitySet="tbl_vendor_payment" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="IssueTicketingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -759,10 +786,10 @@
           <Property Name="IdCompany" Type="Int32" />
           <Property Name="IdRole" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="tbl_company" Relationship="Self.FK_tbl_account_tbl_company" FromRole="tbl_account" ToRole="tbl_company" />
           <NavigationProperty Name="tbl_roles" Relationship="Self.FK_tbl_account_tbl_roles" FromRole="tbl_account" ToRole="tbl_roles" />
           <NavigationProperty Name="tbl_complain" Relationship="Self.FK_tbl_complain_tbl_account" FromRole="tbl_account" ToRole="tbl_complain" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_additional_payment">
           <Key>
@@ -785,12 +812,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdServiceEngineer" Type="Int32" Nullable="false" />
           <Property Name="IdIssue" Type="Int32" Nullable="false" />
-          <Property Name="IdServiceEngineerReplacedBy" Type="Int32" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PreventedFromWorking" Type="Boolean" />
           <NavigationProperty Name="tbl_complain_issue" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" FromRole="tbl_assigned_service_engineer_to_issue" ToRole="tbl_complain_issue" />
           <NavigationProperty Name="tbl_service_engineer" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer" FromRole="tbl_assigned_service_engineer_to_issue" ToRole="tbl_service_engineer" />
-          <NavigationProperty Name="tbl_service_engineer1" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1" FromRole="tbl_assigned_service_engineer_to_issue" ToRole="tbl_service_engineer" />
         </EntityType>
         <EntityType Name="tbl_branch">
           <Key>
@@ -821,11 +846,11 @@
           <Property Name="IdCompany" Type="Int32" Nullable="false" />
           <Property Name="IdBranch" Type="Int32" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbl_branch" Relationship="Self.FK_tbl_company_branch_tbl_branch" FromRole="tbl_company_branch" ToRole="tbl_branch" />
           <NavigationProperty Name="tbl_company" Relationship="Self.FK_tbl_company_branch_tbl_company" FromRole="tbl_company_branch" ToRole="tbl_company" />
           <NavigationProperty Name="tbl_complain" Relationship="Self.FK_tbl_complain_tbl_company_branch" FromRole="tbl_company_branch" ToRole="tbl_complain" />
-          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_complain">
           <Key>
@@ -851,7 +876,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Subject" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Desctiption" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="DateFixed" Type="DateTime" Precision="0" />
           <Property Name="Replaced" Type="Boolean" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -861,6 +886,7 @@
           <NavigationProperty Name="tbl_assigned_service_engineer_to_issue" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_assigned_service_engineer_to_issue" />
           <NavigationProperty Name="tbl_complain" Relationship="Self.FK_tbl_complain_issue_tbl_complain" FromRole="tbl_complain_issue" ToRole="tbl_complain" />
           <NavigationProperty Name="tbl_issue_status" Relationship="Self.FK_tbl_complain_issue_tbl_issue_status" FromRole="tbl_complain_issue" ToRole="tbl_issue_status" />
+          <NavigationProperty Name="tbl_repairment" Relationship="Self.FK_tbl_repairment_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_repairment" />
           <NavigationProperty Name="tbl_replacement" Relationship="Self.FK_tbl_replacement_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_replacement" />
           <NavigationProperty Name="tbl_vendor_payment" Relationship="Self.FK_tbl_vendor_payment_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_vendor_payment" />
         </EntityType>
@@ -904,6 +930,7 @@
           <Property Name="IdPartType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbl_part_types" Relationship="Self.FK_tbl_part_tbl_part_types" FromRole="tbl_part" ToRole="tbl_part_types" />
           <NavigationProperty Name="tbl_unit" Relationship="Self.FK_tbl_part_tbl_unit" FromRole="tbl_part" ToRole="tbl_unit" />
+          <NavigationProperty Name="tbl_repairment" Relationship="Self.FK_tbl_repairment_tbl_part" FromRole="tbl_part" ToRole="tbl_repairment" />
           <NavigationProperty Name="tbl_replacement" Relationship="Self.FK_tbl_replacement_tbl_part" FromRole="tbl_part" ToRole="tbl_replacement" />
         </EntityType>
         <EntityType Name="tbl_part_status">
@@ -941,6 +968,18 @@
           <NavigationProperty Name="tbl_location" Relationship="Self.FK_tbl_location_tbl_region" FromRole="tbl_region" ToRole="tbl_location" />
           <NavigationProperty Name="tbl_state" Relationship="Self.FK_tbl_region_tbl_state" FromRole="tbl_region" ToRole="tbl_state" />
         </EntityType>
+        <EntityType Name="tbl_repairment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IdComplainIssue" Type="Int32" Nullable="false" />
+          <Property Name="IdPart" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbl_complain_issue" Relationship="Self.FK_tbl_repairment_tbl_complain_issue" FromRole="tbl_repairment" ToRole="tbl_complain_issue" />
+          <NavigationProperty Name="tbl_part" Relationship="Self.FK_tbl_repairment_tbl_part" FromRole="tbl_repairment" ToRole="tbl_part" />
+        </EntityType>
         <EntityType Name="tbl_replacement">
           <Key>
             <PropertyRef Name="Id" />
@@ -975,7 +1014,6 @@
           <Property Name="IdVendor" Type="Int32" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbl_assigned_service_engineer_to_issue" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer" FromRole="tbl_service_engineer" ToRole="tbl_assigned_service_engineer_to_issue" />
-          <NavigationProperty Name="tbl_assigned_service_engineer_to_issue1" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1" FromRole="tbl_service_engineer" ToRole="tbl_assigned_service_engineer_to_issue" />
           <NavigationProperty Name="tbl_engineer_profession" Relationship="Self.FK_tbl_engineer_profession_tbl_service_engineer" FromRole="tbl_service_engineer" ToRole="tbl_engineer_profession" />
           <NavigationProperty Name="tbl_vendor" Relationship="Self.FK_tbl_service_engineer_tbl_vendor" FromRole="tbl_service_engineer" ToRole="tbl_vendor" />
         </EntityType>
@@ -1130,18 +1168,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1">
-          <End Role="tbl_service_engineer" Type="Self.tbl_service_engineer" Multiplicity="1" />
-          <End Role="tbl_assigned_service_engineer_to_issue" Type="Self.tbl_assigned_service_engineer_to_issue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_service_engineer">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_assigned_service_engineer_to_issue">
-              <PropertyRef Name="IdServiceEngineerReplacedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbl_branch_tbl_location">
           <End Role="tbl_location" Type="Self.tbl_location" Multiplicity="1" />
           <End Role="tbl_branch" Type="Self.tbl_branch" Multiplicity="*" />
@@ -1226,6 +1252,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_repairment_tbl_complain_issue">
+          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
+          <End Role="tbl_repairment" Type="Self.tbl_repairment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_complain_issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_repairment">
+              <PropertyRef Name="IdComplainIssue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_replacement_tbl_complain_issue">
           <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
           <End Role="tbl_replacement" Type="Self.tbl_replacement" Multiplicity="*" />
@@ -1307,6 +1345,18 @@
             </Principal>
             <Dependent Role="tbl_part">
               <PropertyRef Name="IdUnit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_repairment_tbl_part">
+          <End Role="tbl_part" Type="Self.tbl_part" Multiplicity="1" />
+          <End Role="tbl_repairment" Type="Self.tbl_repairment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_repairment">
+              <PropertyRef Name="IdPart" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1400,6 +1450,7 @@
           <EntitySet Name="tbl_part_types" EntityType="Self.tbl_part_types" />
           <EntitySet Name="tbl_payment_status" EntityType="Self.tbl_payment_status" />
           <EntitySet Name="tbl_region" EntityType="Self.tbl_region" />
+          <EntitySet Name="tbl_repairment" EntityType="Self.tbl_repairment" />
           <EntitySet Name="tbl_replacement" EntityType="Self.tbl_replacement" />
           <EntitySet Name="tbl_roles" EntityType="Self.tbl_roles" />
           <EntitySet Name="tbl_service_engineer" EntityType="Self.tbl_service_engineer" />
@@ -1440,10 +1491,6 @@
             <End Role="tbl_service_engineer" EntitySet="tbl_service_engineer" />
             <End Role="tbl_assigned_service_engineer_to_issue" EntitySet="tbl_assigned_service_engineer_to_issue" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1" Association="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer1">
-            <End Role="tbl_service_engineer" EntitySet="tbl_service_engineer" />
-            <End Role="tbl_assigned_service_engineer_to_issue" EntitySet="tbl_assigned_service_engineer_to_issue" />
-          </AssociationSet>
           <AssociationSet Name="FK_tbl_branch_tbl_location" Association="Self.FK_tbl_branch_tbl_location">
             <End Role="tbl_location" EntitySet="tbl_location" />
             <End Role="tbl_branch" EntitySet="tbl_branch" />
@@ -1472,6 +1519,10 @@
             <End Role="tbl_issue_status" EntitySet="tbl_issue_status" />
             <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbl_repairment_tbl_complain_issue" Association="Self.FK_tbl_repairment_tbl_complain_issue">
+            <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
+            <End Role="tbl_repairment" EntitySet="tbl_repairment" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbl_replacement_tbl_complain_issue" Association="Self.FK_tbl_replacement_tbl_complain_issue">
             <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
             <End Role="tbl_replacement" EntitySet="tbl_replacement" />
@@ -1499,6 +1550,10 @@
           <AssociationSet Name="FK_tbl_part_tbl_unit" Association="Self.FK_tbl_part_tbl_unit">
             <End Role="tbl_unit" EntitySet="tbl_unit" />
             <End Role="tbl_part" EntitySet="tbl_part" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_repairment_tbl_part" Association="Self.FK_tbl_repairment_tbl_part">
+            <End Role="tbl_part" EntitySet="tbl_part" />
+            <End Role="tbl_repairment" EntitySet="tbl_repairment" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_replacement_tbl_part" Association="Self.FK_tbl_replacement_tbl_part">
             <End Role="tbl_part" EntitySet="tbl_part" />
@@ -1545,7 +1600,6 @@
           <EntitySetMapping Name="tbl_account">
             <EntityTypeMapping TypeName="IssueTicketingSystemModel.tbl_account">
               <MappingFragment StoreEntitySet="tbl_account">
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -1553,6 +1607,7 @@
                 <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
                 <ScalarProperty Name="IdRole" ColumnName="IdRole" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1574,7 +1629,6 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdServiceEngineer" ColumnName="IdServiceEngineer" />
                 <ScalarProperty Name="IdIssue" ColumnName="IdIssue" />
-                <ScalarProperty Name="IdServiceEngineerReplacedBy" ColumnName="IdServiceEngineerReplacedBy" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="PreventedFromWorking" ColumnName="PreventedFromWorking" />
               </MappingFragment>
@@ -1602,12 +1656,12 @@
           <EntitySetMapping Name="tbl_company_branch">
             <EntityTypeMapping TypeName="IssueTicketingSystemModel.tbl_company_branch">
               <MappingFragment StoreEntitySet="tbl_company_branch">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Contact" ColumnName="Contact" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdCompany" ColumnName="IdCompany" />
                 <ScalarProperty Name="IdBranch" ColumnName="IdBranch" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1631,7 +1685,7 @@
               <MappingFragment StoreEntitySet="tbl_complain_issue">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Desctiption" ColumnName="Desctiption" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DateFixed" ColumnName="DateFixed" />
                 <ScalarProperty Name="Replaced" ColumnName="Replaced" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
@@ -1708,6 +1762,17 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IdState" ColumnName="IdState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_repairment">
+            <EntityTypeMapping TypeName="IssueTicketingSystemModel.tbl_repairment">
+              <MappingFragment StoreEntitySet="tbl_repairment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IdComplainIssue" ColumnName="IdComplainIssue" />
+                <ScalarProperty Name="IdPart" ColumnName="IdPart" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,5 +12,17 @@ namespace IssueTicketingSystem.Services.CRUD
         {
 
         }
+
+	    public string VendorSelectOptions()
+	    {
+	        var sli=Repository.VendorSelectOptions();
+	        return DropDownCreator.CreateNullable(sli, "FMS");
+	    }
+
+	    public string VendorToPaySelectOption(int idComplainIssue)
+	    {
+	        var sli = Repository.VendorToPaySelectOption(idComplainIssue);
+	        return DropDownCreator.CreateNullable(sli, "-");
+	    }
 	}
 }

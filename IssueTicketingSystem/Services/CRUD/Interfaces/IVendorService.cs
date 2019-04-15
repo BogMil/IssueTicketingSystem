@@ -5,6 +5,7 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 {
 	public interface IVendorService : IGenericService<VendorQueryDto,VendorCommandDto>
 	{
-
+	    string VendorSelectOptions();
+	    string VendorToPaySelectOption(int idComplainIssue);
 	}
 }

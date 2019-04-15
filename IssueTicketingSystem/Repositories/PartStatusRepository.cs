@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using IssueTicketingSystem.Repositories;
 using IssueTicketingSystem.Models;
 using IssueTicketingSystem.Repositories.Interfaces;
@@ -18,5 +20,12 @@ namespace IssueTicketingSystem.Repositories
 		{
 			return entity.Id;		
 		}
+
+	    public List<SelectListItem> PartStatusSelectOption()
+	    {
+	        return Db.tbl_part_status
+	            .Select(x => new SelectListItem {Value = x.Id.ToString(), Text = x.Name})
+	            .ToList();
+	    }
 	}
 }

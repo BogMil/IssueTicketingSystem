@@ -11,5 +11,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	    string VendorSelectOptions();
 	    StaticPagedList<EngineerProfessionQueryDto> ProfessionsOfEngineer(int id, Pager pager, OrderByProperties orderByProperties, string filters);
 	    string ProfessionSelectOptions(int idServiceEngineer);
+	    string ServiceEngineerOfVendorSelectOptions(int? idVendor);
 	}
 }

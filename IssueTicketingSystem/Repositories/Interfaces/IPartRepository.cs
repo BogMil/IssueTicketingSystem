@@ -6,5 +6,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 {
 	public interface IPartRepository : IGenericRepository<tbl_part>
 	{
+	    List<SelectListItem> PartsOfPartTypeSelectOptions(int idPartType);
 	}
 }

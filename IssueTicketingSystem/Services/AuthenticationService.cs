@@ -48,7 +48,8 @@ namespace IssueTicketingSystem.Services
                 new Claim(ClaimTypes.Name, $"{account.FirstName} {account.LastName}"),
                 new Claim(CustomClaimTypes.IdCompany, account.IdCompany.ToString()),
                 new Claim(CustomClaimTypes.IdAccount, account.Id.ToString()),
-                new Claim(CustomClaimTypes.IdRole, account.IdRole.ToString())
+                new Claim(CustomClaimTypes.IdRole, account.IdRole.ToString()),
+                new Claim(ClaimTypes.Role, account.Role)
             };
 
             return claims;

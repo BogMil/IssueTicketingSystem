@@ -12,5 +12,17 @@ namespace IssueTicketingSystem.Services.CRUD
         {
 
         }
+
+	    public string PartTypeSelectOptions()
+	    {
+	        var sli = Repository.PartTypeSelectOptions();
+	        return DropDownCreator.CreateNullable(sli, "-");
+	    }
+
+	    public string PartTypeThatHavePartsSelectOption()
+	    {
+	        var sli = Repository.PartTypeThatHavePartsSelectOption();
+	        return DropDownCreator.CreateNullable(sli, "-");
+        }
 	}
 }

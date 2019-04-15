@@ -19,13 +19,14 @@ namespace IssueTicketingSystem.Models
         {
             this.tbl_additional_payment = new HashSet<tbl_additional_payment>();
             this.tbl_assigned_service_engineer_to_issue = new HashSet<tbl_assigned_service_engineer_to_issue>();
+            this.tbl_repairment = new HashSet<tbl_repairment>();
             this.tbl_replacement = new HashSet<tbl_replacement>();
             this.tbl_vendor_payment = new HashSet<tbl_vendor_payment>();
         }
     
         public int Id { get; set; }
         public string Subject { get; set; }
-        public string Desctiption { get; set; }
+        public string Description { get; set; }
         public Nullable<System.DateTime> DateFixed { get; set; }
         public Nullable<bool> Replaced { get; set; }
         public string Remark { get; set; }
@@ -38,6 +39,8 @@ namespace IssueTicketingSystem.Models
         public virtual ICollection<tbl_assigned_service_engineer_to_issue> tbl_assigned_service_engineer_to_issue { get; set; }
         public virtual tbl_complain tbl_complain { get; set; }
         public virtual tbl_issue_status tbl_issue_status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbl_repairment> tbl_repairment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_replacement> tbl_replacement { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

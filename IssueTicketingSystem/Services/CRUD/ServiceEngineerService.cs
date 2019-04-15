@@ -49,5 +49,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        return DropDownCreator.CreateNullable(selectListItems,"-");
 
 	    }
+
+	    public string ServiceEngineerOfVendorSelectOptions(int? idVendor)
+	    {
+	        var sli = Repository.ServiceEngineerOfVendorSelectOptions(idVendor);
+            return DropDownCreator.Create(sli);
+	    }
 	}
 }

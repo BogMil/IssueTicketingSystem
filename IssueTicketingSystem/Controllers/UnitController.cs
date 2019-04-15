@@ -1,11 +1,15 @@
 using GenericCSR.Controller;
 using System.Web.Mvc;
+using IssueTicketingSystem.Filters;
 using IssueTicketingSystem.Models;
 using IssueTicketingSystem.Services.CRUD.Interfaces;
 
 namespace IssueTicketingSystem.Controllers
 {
-	public class UnitController : 
+    [AuthorizeRoles(
+        CustomRoles.Administrator
+    )]
+    public class UnitController : 
 			GenericController<IUnitService,UnitViewModel,UnitQueryDto,UnitCommandDto>
 		{
 		public UnitController(IUnitService service) : base(service)

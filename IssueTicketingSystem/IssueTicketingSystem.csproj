@@ -227,17 +227,12 @@
     <Compile Include="ClaimsExtractor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
-    <Compile Include="Controllers\CompanyBranchController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ComplainController.cs" />
-    <Compile Include="Controllers\EngineerProfessionController.cs" />
-    <Compile Include="Controllers\IssueStatusController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\PartController.cs" />
     <Compile Include="Controllers\PartTypeController.cs" />
-    <Compile Include="Controllers\PaymentStatusController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ServiceEngineerController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TypeOfComplainController.cs" />
@@ -249,11 +244,14 @@
     <Compile Include="AutoMapper\AutoMapperConfiguration.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="DateTimeModelBinder.cs" />
+    <Compile Include="IssueStatuses.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyBranch.cs" />
     <Compile Include="Models\Complain.cs" />
+    <Compile Include="Models\ComplainIssue.cs" />
     <Compile Include="Models\EngineerProfession.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\IssueTicketingSystemEntities.Context.cs">
@@ -277,6 +275,8 @@
     <Compile Include="Models\PartType.cs" />
     <Compile Include="Models\PaymentStatus.cs" />
     <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Repairment.cs" />
+    <Compile Include="Models\Replacement.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SelectListItem.cs" />
     <Compile Include="Models\ServiceEngineer.cs" />
@@ -332,6 +332,9 @@
     <Compile Include="Models\tbl_region.cs">
       <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_repairment.cs">
+      <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_replacement.cs">
       <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
     </Compile>
@@ -359,17 +362,22 @@
     <Compile Include="Models\TypeOfComplain.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Models\Vendor.cs" />
+    <Compile Include="Models\VendorPayment.cs" />
     <Compile Include="PgedListConverter.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\AssignmentRepository.cs" />
     <Compile Include="Repositories\BranchRepository.cs" />
     <Compile Include="Repositories\CompanyBranchRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
+    <Compile Include="Repositories\ComplainIssueRepository.cs" />
     <Compile Include="Repositories\ComplainRepository.cs" />
     <Compile Include="Repositories\EngineerProfessionRepository.cs" />
     <Compile Include="Repositories\Interfaces\IAccountRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IAssignmentRepository.cs" />
     <Compile Include="Repositories\Interfaces\IBranchRepository.cs" />
     <Compile Include="Repositories\Interfaces\ICompanyBranchRepository.cs" />
     <Compile Include="Repositories\Interfaces\ICompanyRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IComplainIssueRepository.cs" />
     <Compile Include="Repositories\Interfaces\IComplainRepository.cs" />
     <Compile Include="Repositories\Interfaces\IEngineerProfessionRepository.cs" />
     <Compile Include="Repositories\Interfaces\IIssueRepository.cs" />
@@ -379,11 +387,14 @@
     <Compile Include="Repositories\Interfaces\IPartTypeRepository.cs" />
     <Compile Include="Repositories\Interfaces\IPaymentStatusRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRegionRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IRepairmentRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IReplacementRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRoleRepository.cs" />
     <Compile Include="Repositories\Interfaces\IServiceEngineerRepository.cs" />
     <Compile Include="Repositories\Interfaces\IStateRepository.cs" />
     <Compile Include="Repositories\Interfaces\ITypeOfComplainRepository.cs" />
     <Compile Include="Repositories\Interfaces\IUnitRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IVendorPaymentRepository.cs" />
     <Compile Include="Repositories\Interfaces\IVendorRepository.cs" />
     <Compile Include="Repositories\IssueStatusRepository.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
@@ -392,6 +403,8 @@
     <Compile Include="Repositories\PartTypeRepository.cs" />
     <Compile Include="Repositories\PaymentStatusRepository.cs" />
     <Compile Include="Repositories\RegionRepository.cs" />
+    <Compile Include="Repositories\RepairmentRepository.cs" />
+    <Compile Include="Repositories\ReplacementRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\ServiceEngineerRepository.cs" />
     <Compile Include="Repositories\StateRepository.cs" />
@@ -409,18 +422,23 @@
     <Compile Include="Repositories\IssueTicketingSystemRepository.cs" />
     <Compile Include="CustomRoles.cs" />
     <Compile Include="Repositories\UnitRepository.cs" />
+    <Compile Include="Repositories\VendorPaymentRepository.cs" />
     <Compile Include="Repositories\VendorRepository.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\CRUD\AccountService.cs" />
+    <Compile Include="Services\CRUD\AssignmentService.cs" />
     <Compile Include="Services\CRUD\BranchService.cs" />
     <Compile Include="Services\CRUD\CompanyBranchService.cs" />
     <Compile Include="Services\CRUD\CompanyService.cs" />
+    <Compile Include="Services\CRUD\ComplainIssueService.cs" />
     <Compile Include="Services\CRUD\ComplainService.cs" />
     <Compile Include="Services\CRUD\EngineerProfessionService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IAccountService.cs" />
+    <Compile Include="Services\CRUD\Interfaces\IAssignmentService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IBranchService.cs" />
     <Compile Include="Services\CRUD\Interfaces\ICompanyBranchService.cs" />
     <Compile Include="Services\CRUD\Interfaces\ICompanyService.cs" />
+    <Compile Include="Services\CRUD\Interfaces\IComplainIssueService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IComplainService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IEngineerProfessionService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IGenericService.cs" />
@@ -431,11 +449,14 @@
     <Compile Include="Services\CRUD\Interfaces\IPartTypeService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IPaymentStatusService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IRegionService.cs" />
+    <Compile Include="Services\CRUD\Interfaces\IRepairmentService.cs" />
+    <Compile Include="Services\CRUD\Interfaces\IReplacementService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IRoleService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IServiceEngineerService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IStateService.cs" />
     <Compile Include="Services\CRUD\Interfaces\ITypeOfComplainService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IUnitService.cs" />
+    <Compile Include="Services\CRUD\Interfaces\IVendorPaymentService.cs" />
     <Compile Include="Services\CRUD\Interfaces\IVendorService.cs" />
     <Compile Include="Services\CRUD\IssueStatusService.cs" />
     <Compile Include="Services\CRUD\LocationService.cs" />
@@ -445,11 +466,14 @@
     <Compile Include="Services\CRUD\PaymentStatusService.cs" />
     <Compile Include="Services\CRUD\PokretGenericService.cs" />
     <Compile Include="Services\CRUD\RegionService.cs" />
+    <Compile Include="Services\CRUD\RepairmentService.cs" />
+    <Compile Include="Services\CRUD\ReplacementService.cs" />
     <Compile Include="Services\CRUD\RoleService.cs" />
     <Compile Include="Services\CRUD\ServiceEngineerService.cs" />
     <Compile Include="Services\CRUD\StateService.cs" />
     <Compile Include="Services\CRUD\TypeOfComplainService.cs" />
     <Compile Include="Services\CRUD\UnitService.cs" />
+    <Compile Include="Services\CRUD\VendorPaymentService.cs" />
     <Compile Include="Services\CRUD\VendorService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -948,6 +972,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Complain\Index.cshtml" />
+    <Content Include="Views\Complain\ComplainIssueDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

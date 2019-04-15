@@ -8,7 +8,7 @@ namespace IssueTicketingSystem
     public static class ClaimsExtractor
     {
 
-        public static int GetIdNaloga(this IPrincipal user)
+        public static int GetIdAccount(this IPrincipal user)
         {
             if (user != null)
                 return (int) user.GetClaimValueAsInt(CustomClaimTypes.IdAccount);

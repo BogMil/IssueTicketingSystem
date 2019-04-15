@@ -10,6 +10,13 @@
         <table style="margin-left: auto; margin-right: auto; " id="ComplainJqGridTable"></table>
         <div id="ComplainJqGridPager"></div>
     </div>
+
+    <br />
+
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="ComplainIssueJqGridTable"></table>
+        <div id="ComplainIssueJqGridPager"></div>
+    </div>
 </div>
 <style>
     tr.jqgrow td {
@@ -26,6 +33,11 @@
         var controller = "Complain";
         var baseUrl = "/" + controller;
 
+        var complainIssueJqGridId = "#ComplainIssueJqGridTable";
+        var complainIssuePagerId = "#ComplainIssueJqGridPager";
+        var complainIssueController = "Complain";
+        var complainIssueBaseUrl = "/" + complainIssueController;
+
         $(document).ready(function () {
 
             $(jqGridId).jqGrid({
@@ -33,9 +45,19 @@
                 colModel: colModel,
                 pager: pagerId,
                 gridComplete: function () { setMaxHeightForElement(jqGridId); },
-                shrinkToFit:false,
+                shrinkToFit: false,
                 width: 900,
-        });
+                onSelectRow: function (rowId) {
+                    if (rowId != null) {
+                        var data = GetSelectedRowData($(jqGridId));
+                        $(complainIssueJqGridId).jqGrid('setGridParam',
+                            {
+                                url: complainIssueBaseUrl + "/IssuesOfComplain?idComplain=" + data.Id
+                            });
+                        $(complainIssueJqGridId).trigger("reloadGrid");
+                    }
+                }
+            });
 
             $(jqGridId).navGrid(
                 pagerId,
@@ -54,15 +76,44 @@
                 }
             );
 
+            //
+
+            $(complainIssueJqGridId).jqGrid({
+                url: complainIssueBaseUrl + "/Empty",
+                colModel: complainIssueColModel,
+                pager: complainIssuePagerId,
+                gridComplete: function () { setMaxHeightForElement(complainIssueJqGridId); },
+                width: 900,
+                shrinkToFit: true,
+                sortable:false
+            });
+
+            $(complainIssueJqGridId).navGrid(
+                complainIssuePagerId,
+                complainIssueNavgridOptions,
+                complainIssueEditModalOptions,
+                complainIssueCreateModalOptions,
+                complainIssueDeleteModalOptions,
+                complainIssueSearchModalOptions,
+                complainIssueViewModalOptions
+            );
+
+            //$(complainIssueJqGridId).jqGrid("filterToolbar",
+            //    {
+            //        stringResult: true,
+            //        searchOperators: true
+            //    }
+            //);
+
         });
 
         const width = 300;
 
-        const navgridOptions = {view:false};
+        const navgridOptions = { view: false };
 
         const createModalOptions = {
             url: baseUrl + "/AjaxCreate",
-            beforeShowForm: function() {},
+            beforeShowForm: function () { },
             width: width
         };
 
@@ -166,16 +217,16 @@
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdRegion").html(options);
-                                        $("#IdLocation").html("<option>-</option");
-                                        $("#IdBranch").html("<option>-</option");
-                                        $("#IdCompanyBranch").html("<option>-</option");
+                                        $("#IdLocation").html("<option>-</option>");
+                                        $("#IdBranch").html("<option>-</option>");
+                                        $("#IdCompanyBranch").html("<option>-</option>");
                                     }
                                 });
                             } else {
-                                $("#IdRegion").html("<option>-</option");
-                                $("#IdLocation").html("<option>-</option");
-                                $("#IdBranch").html("<option>-</option");
-                                $("#IdCompanyBranch").html("<option>-</option");
+                                $("#IdRegion").html("<option>-</option>");
+                                $("#IdLocation").html("<option>-</option>");
+                                $("#IdBranch").html("<option>-</option>");
+                                $("#IdCompanyBranch").html("<option>-</option>");
                             }
                         }
                     }
@@ -204,14 +255,14 @@
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdLocation").html(options);
-                                        $("#IdBranch").html("<option>-</option");
-                                        $("#IdCompanyBranch").html("<option>-</option");
+                                        $("#IdBranch").html("<option>-</option>");
+                                        $("#IdCompanyBranch").html("<option>-</option>");
                                     }
                                 });
                             } else {
-                                $("#IdLocation").html("<option>-</option");
-                                $("#IdBranch").html("<option>-</option");
-                                $("#IdCompanyBranch").html("<option>-</option");
+                                $("#IdLocation").html("<option>-</option>");
+                                $("#IdBranch").html("<option>-</option>");
+                                $("#IdCompanyBranch").html("<option>-</option>");
                             }
                         }
                     }
@@ -240,12 +291,12 @@
                                     success: function (result) {
                                         var options = removeSelectTag(result);
                                         $("#IdBranch").html(options);
-                                        $("#IdCompanyBranch").html("<option>-</option");
+                                        $("#IdCompanyBranch").html("<option>-</option>");
                                     }
                                 });
                             } else {
-                                $("#IdBranch").html("<option>-</option");
-                                $("#IdCompanyBranch").html("<option>-</option");
+                                $("#IdBranch").html("<option>-</option>");
+                                $("#IdCompanyBranch").html("<option>-</option>");
                             }
                         }
                     }
@@ -277,7 +328,7 @@
                                     }
                                 });
                             } else {
-                                $("#IdCompanyBranch").html("<option>-</option");
+                                $("#IdCompanyBranch").html("<option>-</option>");
                             }
                         }
                     }
@@ -300,8 +351,8 @@
                 dataUrl: "/Complain/TypeOfComplainSelectOptions"
             }
         };
-        
-        const TypeOfComplain= {
+
+        const TypeOfComplain = {
             name: "TypeOfComplain",
             label: "Complain Type",
             template: textColumn,
@@ -343,16 +394,16 @@
             template: textColumn,
             width: 150,
             minResizeWidth: 150,
-            editable:false
+            editable: false
         };
 
-        const CustomerWhoRaisedIssue= {
+        const CustomerWhoRaisedIssue = {
             name: "CustomerWhoRaisedIssue",
             label: "Customer",
             template: textColumn,
             width: 200,
             minResizeWidth: 200,
-            editable:false
+            editable: false
         };
 
         const Aging = {
@@ -375,7 +426,7 @@
             name: "RequstedDate",
             label: "Requsted Date",
             template: dateColumn,
-            editable:false
+            editable: false
         };
 
         const ClosingDate = {
@@ -387,7 +438,7 @@
         const colModel = [
             Id,
             Status,
-            State,Region,Location,Branch,
+            State, Region, Location, Branch,
             IdCompanyBranch, CompanyBranch,
             IdTypeOfComplain, TypeOfComplain,
             Company,
@@ -397,6 +448,115 @@
             CustomerWhoRaisedIssue,
             RequstedDate,
         ];
+
+            //ISSUES
+
+        const complainIssueNavgridOptions = { view: false };
+
+        const complainIssueCreateModalOptions = {
+            url: baseUrl + "/CreateComplainIssue",
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdComplain = GetSelectedRowData($(jqGridId)).Id;
+                return [true, ""];
+            },
+        };
+
+        const complainIssueEditModalOptions = {
+            url: baseUrl + "/UpdateComplainIssue",
+            width: width,
+            beforeSubmit: function (postData) {
+                postData.IdComplain = GetSelectedRowData($(jqGridId)).Id;
+                return [true, ""];
+            }
+        };
+
+        const complainIssueDeleteModalOptions = {
+            url: baseUrl + "/DeleteComplainIssue"
+        };
+
+        const complainIssueSearchModalOptions = {};
+
+        const complainIssueViewModalOptions = {
+            width: width
+        };
+
+        const Subject = {
+            name: "Subject",
+            label: "Subject",
+            template: textAreaColumn,
+            width: 200,
+            minResizeWidth: 200
+        };
+
+        const Description = {
+            name: "Description",
+            label: "Description",
+            template: textAreaColumn,
+            width: 300,
+            minResizeWidth: 300
+        };
+
+        const IdIssueStatus = {
+            name: "IdIssueStatus",
+            label: "Issue Status",
+            template: SelectForCreateOrUpdate,
+            editoptions: {
+                dataUrl: "/Complain/IssueStatusSelectOptions"
+            }
+        };
+
+        const IssueStatus = {
+            name: "IssueStatus",
+            label: "Issue Status",
+            template: textColumn,
+            editable: false,
+            width: 150,
+            minResizeWidth: 150
+        };
+
+        //const IdComplain = {
+        //    name: "IdComplain",
+        //    label: "Complain",
+        //    template: textColumn,
+        //    editable: false,
+        //    width: 150,
+        //    minResizeWidth: 150
+        //};
+
+        const Actions = {
+            name: "Details",
+            label: "Details",
+            formatter: function (cellvalue, option, rowObject) {
+                return '<button style="margin-right:2px;" title="Regions" onClick="details();" class="btn-xsm btn-info"><span class="glyphicon glyphicon-tasks" style="font-size:12px"></span></button>';
+            },
+            editable: false,
+            search: false,
+            colmenu: false,
+            sortable: false,
+            fixed: true,
+            align: 'center',
+            resizable: false,
+            width: 80,
+            viewable: false
+        };
+
+        function details() {
+            setTimeout(function () {
+                var selectedRowData = GetSelectedRowData($(complainIssueJqGridId));
+                window.location.href = "/Complain/ComplainIssueDetails?IdComplainIssue=" + selectedRowData.Id;
+            });
+        }
+
+        const complainIssueColModel = [
+            Id,
+            Subject,
+            Description,
+            IssueStatus,
+            Actions
+
+        ];
+
     </script>
 }
 

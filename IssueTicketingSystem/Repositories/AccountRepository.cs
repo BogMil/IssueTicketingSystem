@@ -24,5 +24,17 @@ namespace IssueTicketingSystem.Repositories
 	            .Where(x => x.Email == email)
 	            .FirstOrDefault(x => x.Password == password);
 	    }
+
+	    protected override tbl_account ModifyEntityBeforeCreate(tbl_account entity)
+	    {
+	        entity.Password= System.Web.Security.Membership.GeneratePassword(10, 3);
+	        return entity;
+	    }
+
+	    protected override tbl_account ModifyUpdateSourceEntityBeforeUpdate(tbl_account updateSourceEntity, tbl_account oldEntity)
+	    {
+	        updateSourceEntity.Password = oldEntity.Password;
+	        return updateSourceEntity;
+	    }
 	}
 }

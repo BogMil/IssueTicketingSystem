@@ -1,11 +1,15 @@
 using GenericCSR.Controller;
 using System.Web.Mvc;
+using IssueTicketingSystem.Filters;
 using IssueTicketingSystem.Models;
 using IssueTicketingSystem.Services.CRUD.Interfaces;
 
 namespace IssueTicketingSystem.Controllers
 {
-	public class PartController : 
+    [AuthorizeRoles(
+        CustomRoles.Administrator
+    )]
+    public class PartController : 
 			GenericController<IPartService,PartViewModel,PartQueryDto,PartCommandDto>
 		{
 		public PartController(IPartService service) : base(service)

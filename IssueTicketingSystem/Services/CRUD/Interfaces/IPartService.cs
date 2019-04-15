@@ -10,5 +10,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	{
 	    string PartTypeSelectOptions();
 	    string UnitSelectOptions();
+	    string PartsOfPartTypeSelectOption(int idPartType);
 	}
 }

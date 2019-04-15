@@ -42,6 +42,7 @@ namespace IssueTicketingSystem.Models
         public virtual DbSet<tbl_part_types> tbl_part_types { get; set; }
         public virtual DbSet<tbl_payment_status> tbl_payment_status { get; set; }
         public virtual DbSet<tbl_region> tbl_region { get; set; }
+        public virtual DbSet<tbl_repairment> tbl_repairment { get; set; }
         public virtual DbSet<tbl_replacement> tbl_replacement { get; set; }
         public virtual DbSet<tbl_roles> tbl_roles { get; set; }
         public virtual DbSet<tbl_service_engineer> tbl_service_engineer { get; set; }

@@ -1,0 +1,1016 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+<div>
+    <input type="text" hidden="hidden" id="idComplainIssue" value="@ViewBag.IdComplainIssue" />
+
+    Complain type:<b>@ViewBag.ComplainIssue.ComplainType</b>, Subject: <b>@ViewBag.ComplainIssue.Subject</b>, Status: <b>@ViewBag.ComplainIssue.IssueStatus</b>
+    
+    <style>
+        .nav-tabs {
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: -webkit-box;  
+            display: -moz-box;   
+        }
+        .nav-tabs>li {
+            float:none;
+        }
+    </style>
+        <ul class="nav nav-tabs " id="listOfJqGridTabLinks">
+            <li class=" jqGridTabLink active"><a data-toggle="tab" href="#assignmentTab">Assignments</a></li>
+            <li><a class="jqGridTabLink" data-toggle="tab" href="#fixingTab">Check list</a></li>
+            <li><a class="jqGridTabLink" data-toggle="tab" href="#replacementTab">Replacements</a></li>
+            <li><a class="jqGridTabLink" data-toggle="tab" href="#repairmentTab">Repairment</a></li>
+            <li><a class="jqGridTabLink" data-toggle="tab" href="#paymentTab">Vendor Payments</a></li>
+            @*<li><a class="jqGridTabLink" data-toggle="tab" href="#aditionalPaymentTab">Aditional Payments</a></li>*@
+        </ul>
+    
+
+    <div class="tab-content" id="tabs">
+
+        <div id="assignmentTab" class="tab-pane fade in active">
+            <table id="assignmentJqGridTable"></table>
+            <div id="assignmentJqGridPager"></div>
+        </div>
+
+        <div id="fixingTab" class="tab-pane fade in ">
+            <table id="fixingJqGridTable"></table>
+            <div id="fixingJqGridPager"></div>
+        </div>
+
+        <div id="replacementTab" class="tab-pane fade ">
+            <table id="replacementJqGridTable"></table>
+            <div id="replacementJqGridPager"></div>
+        </div>
+
+        <div id="repairmentTab" class="tab-pane fade ">
+            <table id="repairmentJqGridTable"></table>
+            <div id="repairmentJqGridPager"></div>
+        </div>
+
+        <div id="paymentTab" class="tab-pane fade ">
+            <table id="paymentJqGridTable"></table>
+            <div id="paymentJqGridPager"></div>
+        </div>
+
+        @*<div id="aditionalPaymentTab" class="tab-pane fade ">
+            <table id="aditionalPaymentJqGridTable"></table>
+            <div id="aditionalPaymentJqGridPager"></div>
+        </div>*@
+    </div>
+
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+
+@section scripts{
+    <script>
+
+        var assignmentJqGridId = "#assignmentJqGridTable";
+        var assignmentPagerId = "#assignmentJqGridPager";
+
+        var fixingJqGridId = "#fixingJqGridTable";
+        var fixingPagerId = "#fixingJqGridPager";
+
+        var replacementJqGridId = "#replacementJqGridTable";
+        var replacementPagerId = "#replacementJqGridPager";
+
+        var repairmentJqGridId = "#repairmentJqGridTable";
+        var repairmentPagerId = "#repairmentJqGridPager";
+
+        var paymentJqGridId = "#paymentJqGridTable";
+        var paymentPagerId = "#paymentJqGridPager";
+
+        var aditionalPaymentJqGridId = "#aditionalPaymentJqGridTable";
+        var aditionalPaymentPagerId = "#aditionalPaymentJqGridPager";
+
+        var controller = "Complain";
+        var baseUrl = "/" + controller;
+
+
+
+        const idComplainIssue = $("#idComplainIssue").val();
+
+        $(document).ready(function () {
+
+            createAssignmentJgrid();
+            createFixingJgrid();
+            createReplacementJgrid();
+            createRepairmentJgrid();
+            createPaymentJgrid();
+            //createAditionalPaymentJgrid();
+        });
+
+        function createAssignmentJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, refresh: true, edit: false };
+
+            const createModalOptions = {
+                url: baseUrl + "/CreateAssignment",
+                beforeShowForm: function () { },
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdIssue = idComplainIssue;
+                    return [true, ""];
+                },
+            };
+
+            const editModalOptions = {
+                //url: baseUrl + "/UpdateAssignment",
+                //width: width,
+                //beforeSubmit: function (postData) {
+                //    postData.IdIssue = idComplainIssue;
+                //    return [true, ""];
+                //},
+                //beforeShowForm: function () {
+                //    var idAssignment = GetSelectedRowData($(assignmentJqGridId)).Id;
+                //    $.ajax({
+                //        url: "/Complain/GetAssignmentEditSelectValues",
+                //        data: { idAssignment: idAssignment },
+                //        success: function (result) {
+                //            console.log(result);
+                //            populateAndSelectVendorOption(result.IdVendor);
+                //            populateAndSelectEngineerOption(result.IdVendor, result.IdServiceEngineer);
+                //        }
+                //    });
+                //}
+            };
+
+            function populateAndSelectVendorOption(idVendor) {
+                $.ajax({
+                    url: "/Complain/VendorSelectOptions",
+                    success: function (result) {
+                        var options = removeSelectTag(result);
+                        $("#IdVendor").html(options);
+                        $("#IdVendor").val(idVendor);
+                    }
+                });
+            }
+
+            function populateAndSelectEngineerOption(idVendor, idServiceEngineer) {
+                $.ajax({
+                    url: "/Complain/ServiceEngineerOfVendorSelectOptions",
+                    data: { idVendor: idVendor },
+                    success: function (result) {
+                        var options = removeSelectTag(result);
+                        $("#IdServiceEngineer").html(options);
+                        $("#IdServiceEngineer").val(idServiceEngineer);
+                    }
+                });
+            }
+
+            const deleteModalOptions = {
+                url: baseUrl + "/DeleteAssignment"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdVendor = {
+                name: "IdVendor",
+                label: "Vendor",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/VendorSelectOptions",
+                    dataEvents: [
+                        {
+                            type: 'change',
+                            fn: function (e) {
+                                var idVendor = e.target.value;
+
+                                $.ajax({
+                                    url: "/Complain/ServiceEngineerOfVendorSelectOptions",
+                                    data: { idVendor: idVendor },
+                                    success: function (result) {
+                                        var options = removeSelectTag(result);
+                                        $("#IdServiceEngineer").html(options);
+                                    }
+                                });
+
+                            }
+                        }
+                    ]
+                },
+                editrules: { required: false }
+            };
+
+            const Vendor = {
+                name: "Vendor",
+                label: "Vendor",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdServiceEngineer = {
+                name: "IdServiceEngineer",
+                label: "Engineer",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/ServiceEngineerOfVendorSelectOptions"
+                }
+            };
+
+            const ServiceEngineer = {
+                name: "ServiceEngineer",
+                label: "Engineer",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                IdVendor, Vendor,
+                IdServiceEngineer, ServiceEngineer,
+            ];
+
+            $(assignmentJqGridId).jqGrid({
+                url: baseUrl + "/AssignmentsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                postData: {
+                    idState: $("#idState").val()
+                },
+                pager: assignmentPagerId,
+                gridComplete: function () { setMaxHeightForElement(assignmentJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(assignmentJqGridId).navGrid(
+                assignmentPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(assignmentJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+        function createFixingJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, refresh: true, add: false, del: false };
+
+            const createModalOptions = {
+                //url: baseUrl + "/CreateAssignment",
+                //beforeShowForm: function () { },
+                //width: width,
+                //beforeSubmit: function (postData) {
+                //    postData.IdIssue = idComplainIssue;
+                //    return [true, ""];
+                //},
+            };
+
+            const editModalOptions = {
+                url: baseUrl + "/UpdateAssignment",
+                width: width,
+                beforeSubmit: function (postData) {
+                    var selectedRowData = GetSelectedRowData($(fixingJqGridId));
+                    postData.IdIssue = idComplainIssue;
+                    postData.IdServiceEngineer = selectedRowData.IdServiceEngineer;
+                    return [true, ""];
+                },
+            };
+
+            const deleteModalOptions = {
+                //url: baseUrl + "/DeleteAssignment"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const Vendor = {
+                name: "Vendor",
+                label: "Vendor",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdServiceEngineer = {
+                name: "IdServiceEngineer",
+                label: "Engineer",
+                template: integerColumn,
+                editable: false,
+                hidden: true
+            };
+
+            const ServiceEngineer = {
+                name: "ServiceEngineer",
+                label: "Engineer",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const PreventedFromWorking = {
+                name: "PreventedFromWorking",
+                label: "Prevented",
+                template: boolColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Remark = {
+                name: "Remark",
+                label: "Remark",
+                template: textAreaColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                Vendor,
+                ServiceEngineer, IdServiceEngineer,
+                PreventedFromWorking,
+                Remark
+            ];
+
+            $(fixingJqGridId).jqGrid({
+                url: baseUrl + "/AssignmentsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                postData: {
+                    idState: $("#idState").val()
+                },
+                pager: fixingPagerId,
+                gridComplete: function () { setMaxHeightForElement(fixingJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(fixingJqGridId).navGrid(
+                fixingPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(fixingJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+        function createReplacementJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, };
+
+            const createModalOptions = {
+                url: baseUrl + "/CreateReplacement",
+                beforeShowForm: function () { },
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdComplainIssue = idComplainIssue;
+                    return [true, ""];
+                },
+            };
+
+            const editModalOptions = {
+                url: baseUrl + "/UpdateReplacement",
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdComplainIssue = idComplainIssue;
+                    return [true, ""];
+                },
+                beforeShowForm: function () {
+                    var idReplacement = GetSelectedRowData($(replacementJqGridId)).Id;
+                    $.ajax({
+                        url: "/Complain/GetReplacementEditSelectValues",
+                        data: { idReplacement: idReplacement },
+                        success: function (result) {
+                            $("#IdPartType").val(result.IdPartType);
+                            populateAndSelectPartOption(result.IdPartType,result.IdPart);
+                        }
+                    });
+                }
+            };
+
+            function populateAndSelectPartOption(idPartType,idPart) {
+                $.ajax({
+                    url: "/Complain/PartsOfPartTypeSelectOption",
+                    data: { idPartType: idPartType },
+                    success: function (result) {
+                        var options = removeSelectTag(result);
+                        $("#IdPart").html(options);
+                        $("#IdPart").val(idPart);
+                    }
+                });
+            }
+
+            const deleteModalOptions = {
+                url: baseUrl + "/DeleteReplacement"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdPartType = {
+                name: "IdPartType",
+                label: "Part Type",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/PartTypeThatHavePartsSelectOption",
+                    dataEvents: [
+                        {
+                            type: 'change',
+                            fn: function (e) {
+                                var idPartType = e.target.value;
+                                if (idPartType) {
+                                    $.ajax({
+                                        url: "/Complain/PartsOfPartTypeSelectOption",
+                                        data: { idPartType: idPartType },
+                                        success: function (result) {
+                                            var options = removeSelectTag(result);
+                                            $("#IdPart").html(options);
+                                        }
+                                    });
+                                }
+                                else {
+                                    $("#IdPart").html("<option>-</option>");
+
+                                }
+
+                            }
+                        }
+                    ]
+                }
+            };
+
+            const PartType = {
+                name: "PartType",
+                label: "Part Type ",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdPart = {
+                name: "IdPart",
+                label: "Part",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/Empty"
+                }
+            };
+
+            const Part = {
+                name: "Part",
+                label: "Part",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdPartStatus = {
+                name: "IdPartStatus",
+                label: "Part Status",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/PartStatusSelectOption"
+                }
+            };
+
+            const PartStatus = {
+                name: "PartStatus",
+                label: "Part Status",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Quantity = {
+                name: "Quantity",
+                label: "Quantity",
+                template: decimalColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Remark = {
+                name: "Remark",
+                label: "Remark",
+                template: textAreaColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                IdPartType, PartType,
+                Part, IdPart,
+                Quantity,
+                PartStatus, IdPartStatus,
+                Remark
+            ];
+
+            $(replacementJqGridId).jqGrid({
+                url: baseUrl + "/ReplacementsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                postData: {
+                    idState: $("#idState").val()
+                },
+                pager: replacementPagerId,
+                gridComplete: function () { setMaxHeightForElement(replacementJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(replacementJqGridId).navGrid(
+                replacementPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(replacementJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+        function createRepairmentJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, };
+
+            const createModalOptions = {
+                url: baseUrl + "/CreateRepairment",
+                beforeShowForm: function () { },
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdComplainIssue = idComplainIssue;
+                    return [true, ""];
+                },
+            };
+
+            const editModalOptions = {
+                url: baseUrl + "/UpdateRepairment",
+                width: width,
+                beforeSubmit: function (postData) {
+                    var selectedRowData = GetSelectedRowData($(repairmentJqGridId));
+                    console.log(selectedRowData);
+                    postData.IdComplainIssue = idComplainIssue;
+                    postData.IdServiceEngineer = selectedRowData.IdServiceEngineer;
+                    return [true, ""];
+                },
+                beforeShowForm: function () {
+                    var idRepairment = GetSelectedRowData($(repairmentJqGridId)).Id;
+                    $.ajax({
+                        url: "/Complain/GetRepairmentEditSelectValues",
+                        data: { idRepairment: idRepairment },
+                        success: function (result) {
+                            $("#IdPartType").val(result.IdPartType);
+                            populateAndSelectPartOption(result.IdPartType, result.IdPart);
+                        }
+                    });
+                }
+            };
+            function populateAndSelectPartOption(idPartType, idPart) {
+                $.ajax({
+                    url: "/Complain/PartsOfPartTypeSelectOption",
+                    data: { idPartType: idPartType },
+                    success: function (result) {
+                        var options = removeSelectTag(result);
+                        $("#IdPart").html(options);
+                        $("#IdPart").val(idPart);
+                    }
+                });
+            }
+
+            const deleteModalOptions = {
+                url: baseUrl + "/DeleteRepairment"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdPartType = {
+                name: "IdPartType",
+                label: "Part Type",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/PartTypeThatHavePartsSelectOption",
+                    dataEvents: [
+                        {
+                            type: 'change',
+                            fn: function (e) {
+                                var idPartType = e.target.value;
+                                if (idPartType) {
+                                    $.ajax({
+                                        url: "/Complain/PartsOfPartTypeSelectOption",
+                                        data: { idPartType: idPartType },
+                                        success: function (result) {
+                                            var options = removeSelectTag(result);
+                                            $("#IdPart").html(options);
+                                        }
+                                    });
+                                }
+                                else {
+                                    $("#IdPart").html("<option>-</option>");
+
+                                }
+
+                            }
+                        }
+                    ]
+                }
+            };
+
+            const PartType = {
+                name: "PartType",
+                label: "Part Type ",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdPart = {
+                name: "IdPart",
+                label: "Part",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/Empty"
+                }
+            };
+
+            const Part = {
+                name: "Part",
+                label: "Part",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Quantity = {
+                name: "Quantity",
+                label: "Quantity",
+                template: decimalColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Remark = {
+                name: "Remark",
+                label: "Remark",
+                template: textAreaColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                IdPartType,PartType,
+                Part, IdPart,
+                Quantity,
+                Remark
+            ];
+
+            $(repairmentJqGridId).jqGrid({
+                url: baseUrl + "/RepairmentsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                postData: {
+                    idState: $("#idState").val()
+                },
+                pager: repairmentPagerId,
+                gridComplete: function () { setMaxHeightForElement(repairmentJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(repairmentJqGridId).navGrid(
+                repairmentPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(repairmentJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+        function createPaymentJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, };
+
+            const createModalOptions = {
+                url: baseUrl + "/CreateVendorPayment",
+                beforeShowForm: function () { },
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdIssue  = idComplainIssue;
+                    return [true, ""];
+                },
+            };
+
+            const editModalOptions = {
+                url: baseUrl + "/UpdateVendorPayment",
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdIssue = idComplainIssue;
+                    return [true, ""];
+                },
+                beforeShowForm: function() {
+                    $("#tr_IdVendor").attr('hidden','hidden');
+                }
+            };
+
+            const deleteModalOptions = {
+                url: baseUrl + "/DeleteVendorPayment"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdPaymentStatus = {
+                name: "IdPaymentStatus",
+                label: "Payment Status",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/PaymentStatusSelectOptions"
+                }
+            };
+
+            const PaymentStatus = {
+                name: "PaymentStatus",
+                label: "Payment Status",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const IdVendor = {
+                name: "IdVendor",
+                label: "Vendor",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/VendorToPaySelectOption?idComplainIssue="+idComplainIssue
+                },
+                editrules: {required:false}
+            };
+
+            const Vendor = {
+                name: "Vendor",
+                label: "Vendor",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Amount = {
+                name: "Amount",
+                label: "Amount",
+                template: decimalColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Remark = {
+                name: "Remark",
+                label: "Remark",
+                template: textAreaColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                IdPaymentStatus, PaymentStatus,
+                IdVendor, Vendor,
+                Amount,
+                Remark
+            ];
+
+            $(paymentJqGridId).jqGrid({
+                url: baseUrl + "/VendorPaymentsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                pager: paymentPagerId,
+                gridComplete: function () { setMaxHeightForElement(paymentJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(paymentJqGridId).navGrid(
+                paymentPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(paymentJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+        function createAditionalPaymentJgrid() {
+            const width = 300;
+
+            const navgridOptions = { view: false, };
+
+            const createModalOptions = {
+                url: baseUrl + "/CreateAditionalPayment",
+                beforeShowForm: function () { },
+                width: width,
+                beforeSubmit: function (postData) {
+                    postData.IdIssue = idComplainIssue;
+                    return [true, ""];
+                },
+            };
+
+            const editModalOptions = {
+                url: baseUrl + "/UpdateAditionalPayment",
+                width: width,
+                beforeSubmit: function (postData) {
+                    var selectedRowData = GetSelectedRowData($(aditionalPaymentJqGridId));
+                    console.log(selectedRowData);
+                    postData.IdIssue = idComplainIssue;
+                    postData.IdServiceEngineer = selectedRowData.IdServiceEngineer;
+                    return [true, ""];
+                },
+            };
+
+            const deleteModalOptions = {
+                url: baseUrl + "/DeleteAditionalPayment"
+            };
+
+            const searchModalOptions = {};
+
+            const viewModalOptions = {
+                width: width
+            };
+
+
+            const Id = {
+                name: "Id",
+                template: primaryKeyColumn,
+            };
+
+            const IdPaymentStatus = {
+                name: "IdPaymentStatus",
+                label: "Payment Status",
+                template: SelectForCreateOrUpdate,
+                editoptions: {
+                    dataUrl: "/Complain/VendorToPaySelectOption"
+                }
+            };
+
+            const PaymentStatus = {
+                name: "PaymentStatus",
+                label: "Payment Status",
+                template: textColumn,
+                editable: false,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Amount = {
+                name: "Amount",
+                label: "Amount",
+                template: decimalColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const Remark = {
+                name: "Remark",
+                label: "Remark",
+                template: textAreaColumn,
+                width: 150,
+                minResizeWidth: 150
+            };
+
+            const colModel = [
+                Id,
+                IdPaymentStatus, PaymentStatus,
+                Amount,
+                Remark
+            ];
+
+            $(aditionalPaymentJqGridId).jqGrid({
+                url: baseUrl + "/AditionalPaymentsOfComplainIssue?idComplainIssue=" + idComplainIssue,
+                colModel: colModel,
+                pager: aditionalPaymentPagerId,
+                gridComplete: function () { setMaxHeightForElement(paymentJqGridId); },
+                width: 650,
+                shrinkToFit: true
+            });
+
+            $(aditionalPaymentJqGridId).navGrid(
+                aditionalPaymentPagerId,
+                navgridOptions,
+                editModalOptions,
+                createModalOptions,
+                deleteModalOptions,
+                searchModalOptions,
+                viewModalOptions
+            );
+
+            $(aditionalPaymentJqGridId).jqGrid("filterToolbar",
+                {
+                    stringResult: true,
+                    searchOperators: true
+                }
+            );
+        }
+
+
+    </script>
+}
+

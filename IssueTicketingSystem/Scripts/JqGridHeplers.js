@@ -18,7 +18,7 @@ var textColumn = {
     minResizeWidth: 300,
     stype: "text",
     searchoptions: {
-        sopt: ["eq", "nq", "bw", "ew", "cn", "nc"]
+        sopt: ["cn","eq", "nq", "bw", "ew", "nc"]
     },
     editoptions: { autocomplete: "off" },
     coloptions: {

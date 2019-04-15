@@ -28,5 +28,11 @@ namespace IssueTicketingSystem.Services.CRUD
 	        var selectListItems = _unitRepo.UnitSelectOptions();
 	        return DropDownCreator.Create(selectListItems);
         }
+
+	    public string PartsOfPartTypeSelectOption(int idPartType)
+	    {
+	        var sli = Repository.PartsOfPartTypeSelectOptions(idPartType);
+	        return DropDownCreator.Create(sli);
+	    }
 	}
 }

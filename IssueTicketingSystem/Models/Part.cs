@@ -77,6 +77,7 @@ namespace IssueTicketingSystem.Models
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.id))
                 .ForMember(d => d.tbl_part_types, o => o.Ignore())
                 .ForMember(d => d.tbl_replacement, o => o.Ignore())
+                .ForMember(d => d.tbl_repairment, o => o.Ignore())
                 .ForMember(d => d.tbl_unit, o => o.Ignore());
 
             CreateMap<PagedList<tbl_part>, StaticPagedList<PartQueryDto>>()

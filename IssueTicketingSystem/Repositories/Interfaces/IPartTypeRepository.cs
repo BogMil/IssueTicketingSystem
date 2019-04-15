@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	public interface IPartTypeRepository : IGenericRepository<tbl_part_types>
 	{
 	    List<SelectListItem> PartTypeSelectOptions();
+	    List<SelectListItem> PartTypeThatHavePartsSelectOption();
 	}
 }

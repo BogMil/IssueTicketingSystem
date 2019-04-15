@@ -12,5 +12,11 @@ namespace IssueTicketingSystem.Services.CRUD
         {
 
         }
+
+	    public string PartStatusSelectOption()
+	    {
+	        var sli = Repository.PartStatusSelectOption();
+            return DropDownCreator.Create(sli);
+	    }
 	}
 }
