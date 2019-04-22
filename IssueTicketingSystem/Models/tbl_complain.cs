@@ -22,7 +22,6 @@ namespace IssueTicketingSystem.Models
     
         public int Id { get; set; }
         public System.DateTime RequstedDate { get; set; }
-        public System.DateTime ClosingDate { get; set; }
         public string Status { get; set; }
         public string Aging { get; set; }
         public string Remark { get; set; }

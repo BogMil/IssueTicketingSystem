@@ -93,7 +93,8 @@
             label: "Name",
             template: textAreaColumn,
             width: 300,
-            minResizeWidth: 300
+            minResizeWidth: 300,
+            editoptions: { maxlength: 200 }
         };
 
         const BancAccountNumber = {
@@ -101,7 +102,8 @@
             label: "A/C",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 }
         };
 
         const IFSC = {
@@ -109,7 +111,8 @@
             label: "IFSC",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 }
         };
 
         const Active = {
@@ -128,7 +131,8 @@
             minResizeWidth: 150,
             editrules: {
                 required:false
-            }
+            },
+            editoptions: { maxlength: 20 }
         };
 
         const colModel = [

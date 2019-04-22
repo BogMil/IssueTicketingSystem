@@ -27,7 +27,6 @@ namespace IssueTicketingSystem.Models
     
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<tbl_account> tbl_account { get; set; }
-        public virtual DbSet<tbl_additional_payment> tbl_additional_payment { get; set; }
         public virtual DbSet<tbl_assigned_service_engineer_to_issue> tbl_assigned_service_engineer_to_issue { get; set; }
         public virtual DbSet<tbl_branch> tbl_branch { get; set; }
         public virtual DbSet<tbl_company> tbl_company { get; set; }

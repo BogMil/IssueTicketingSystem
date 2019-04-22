@@ -35,7 +35,9 @@ namespace IssueTicketingSystem.AutoMapper
                     cfg.AddProfile<ReplacementMappingProfile>();
                     cfg.AddProfile<RepairmentMappingProfile>();
                     cfg.AddProfile<VendorPaymentMappingProfile>();
-                    
+                    //cfg.AddProfile<ReportProfile>();
+
+                    cfg.Advanced.AllowAdditiveTypeMapCreation = true;
                 }
             );
             config.AssertConfigurationIsValid();

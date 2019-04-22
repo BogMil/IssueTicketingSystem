@@ -233,6 +233,7 @@
     <Compile Include="Controllers\PartController.cs" />
     <Compile Include="Controllers\PartTypeController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ServiceEngineerController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TypeOfComplainController.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="Models\Region.cs" />
     <Compile Include="Models\Repairment.cs" />
     <Compile Include="Models\Replacement.cs" />
+    <Compile Include="Models\ReportModels.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\SelectListItem.cs" />
     <Compile Include="Models\ServiceEngineer.cs" />
@@ -285,9 +287,6 @@
       <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_account.cs">
-      <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbl_additional_payment.cs">
       <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_assigned_service_engineer_to_issue.cs">
@@ -924,6 +923,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
@@ -957,7 +957,9 @@
     <Content Include="Views\Shared\_ReactLayout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Vendor\Index.cshtml" />
     <Content Include="Views\Shared\_JqGridMobileLayout.cshtml" />
     <Content Include="Views\PartType\Index.cshtml" />
@@ -973,6 +975,7 @@
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Complain\Index.cshtml" />
     <Content Include="Views\Complain\ComplainIssueDetails.cshtml" />
+    <Content Include="Views\Report\MIS.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -982,10 +985,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Services\Interfaces\" />
-    <Folder Include="Views\CompanyBranch\" />
-    <Folder Include="Views\IssueStatus\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

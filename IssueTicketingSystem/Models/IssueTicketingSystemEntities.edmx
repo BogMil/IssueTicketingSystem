@@ -28,17 +28,6 @@
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
-        <EntityType Name="tbl_additional_payment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdVendor" Type="int" />
-          <Property Name="IdIssue" Type="int" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
-          <Property Name="IdPaymentStatus" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="tbl_assigned_service_engineer_to_issue">
           <Key>
             <PropertyRef Name="Id" />
@@ -47,7 +36,7 @@
           <Property Name="IdServiceEngineer" Type="int" Nullable="false" />
           <Property Name="IdIssue" Type="int" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
-          <Property Name="PreventedFromWorking" Type="bit" />
+          <Property Name="PreventedFromWorking" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_branch">
           <Key>
@@ -83,10 +72,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RequstedDate" Type="date" Nullable="false" />
-          <Property Name="ClosingDate" Type="date" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Aging" Type="nvarchar" MaxLength="50" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="1000" />
           <Property Name="IdAccount" Type="int" Nullable="false" />
           <Property Name="IdTypeOfComplain" Type="int" Nullable="false" />
           <Property Name="IdCompanyBranch" Type="int" Nullable="false" />
@@ -99,7 +87,7 @@
           <Property Name="Subject" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="DateFixed" Type="date" />
-          <Property Name="Replaced" Type="bit" />
+          <Property Name="Replaced" Type="bit" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="IdComplain" Type="int" Nullable="false" />
           <Property Name="IdIssueStatus" Type="int" Nullable="false" />
@@ -248,9 +236,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdVendor" Type="int" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="IdIssue" Type="int" />
+          <Property Name="IdIssue" Type="int" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="IdPaymentStatus" Type="int" Nullable="false" />
+          <Property Name="PayedByCash" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_tbl_account_tbl_company">
           <End Role="tbl_company" Type="Self.tbl_company" Multiplicity="0..1" />
@@ -273,42 +262,6 @@
             </Principal>
             <Dependent Role="tbl_account">
               <PropertyRef Name="IdRole" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_complain_issue">
-          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_complain_issue">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdIssue" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_payment_status">
-          <End Role="tbl_payment_status" Type="Self.tbl_payment_status" Multiplicity="1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_payment_status">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdPaymentStatus" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_vendor">
-          <End Role="tbl_vendor" Type="Self.tbl_vendor" Multiplicity="0..1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_vendor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdVendor" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -577,7 +530,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_vendor_payment_tbl_complain_issue">
-          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="0..1" />
+          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
           <End Role="tbl_vendor_payment" Type="Self.tbl_vendor_payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_complain_issue">
@@ -615,7 +568,6 @@
         <EntityContainer Name="IssueTicketingSystemModelStoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_account" EntityType="Self.tbl_account" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_additional_payment" EntityType="Self.tbl_additional_payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_assigned_service_engineer_to_issue" EntityType="Self.tbl_assigned_service_engineer_to_issue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_branch" EntityType="Self.tbl_branch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_company" EntityType="Self.tbl_company" Schema="dbo" store:Type="Tables" />
@@ -646,18 +598,6 @@
           <AssociationSet Name="FK_tbl_account_tbl_roles" Association="Self.FK_tbl_account_tbl_roles">
             <End Role="tbl_roles" EntitySet="tbl_roles" />
             <End Role="tbl_account" EntitySet="tbl_account" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_complain_issue" Association="Self.FK_tbl_additional_payment_tbl_complain_issue">
-            <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_payment_status" Association="Self.FK_tbl_additional_payment_tbl_payment_status">
-            <End Role="tbl_payment_status" EntitySet="tbl_payment_status" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_vendor" Association="Self.FK_tbl_additional_payment_tbl_vendor">
-            <End Role="tbl_vendor" EntitySet="tbl_vendor" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" Association="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue">
             <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
@@ -791,20 +731,6 @@
           <NavigationProperty Name="tbl_roles" Relationship="Self.FK_tbl_account_tbl_roles" FromRole="tbl_account" ToRole="tbl_roles" />
           <NavigationProperty Name="tbl_complain" Relationship="Self.FK_tbl_complain_tbl_account" FromRole="tbl_account" ToRole="tbl_complain" />
         </EntityType>
-        <EntityType Name="tbl_additional_payment">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdVendor" Type="Int32" />
-          <Property Name="IdIssue" Type="Int32" Nullable="false" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IdPaymentStatus" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbl_complain_issue" Relationship="Self.FK_tbl_additional_payment_tbl_complain_issue" FromRole="tbl_additional_payment" ToRole="tbl_complain_issue" />
-          <NavigationProperty Name="tbl_payment_status" Relationship="Self.FK_tbl_additional_payment_tbl_payment_status" FromRole="tbl_additional_payment" ToRole="tbl_payment_status" />
-          <NavigationProperty Name="tbl_vendor" Relationship="Self.FK_tbl_additional_payment_tbl_vendor" FromRole="tbl_additional_payment" ToRole="tbl_vendor" />
-        </EntityType>
         <EntityType Name="tbl_assigned_service_engineer_to_issue">
           <Key>
             <PropertyRef Name="Id" />
@@ -813,7 +739,7 @@
           <Property Name="IdServiceEngineer" Type="Int32" Nullable="false" />
           <Property Name="IdIssue" Type="Int32" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="PreventedFromWorking" Type="Boolean" />
+          <Property Name="PreventedFromWorking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbl_complain_issue" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" FromRole="tbl_assigned_service_engineer_to_issue" ToRole="tbl_complain_issue" />
           <NavigationProperty Name="tbl_service_engineer" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer" FromRole="tbl_assigned_service_engineer_to_issue" ToRole="tbl_service_engineer" />
         </EntityType>
@@ -858,10 +784,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RequstedDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ClosingDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Aging" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IdAccount" Type="Int32" Nullable="false" />
           <Property Name="IdTypeOfComplain" Type="Int32" Nullable="false" />
           <Property Name="IdCompanyBranch" Type="Int32" Nullable="false" />
@@ -878,11 +803,10 @@
           <Property Name="Subject" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="DateFixed" Type="DateTime" Precision="0" />
-          <Property Name="Replaced" Type="Boolean" />
+          <Property Name="Replaced" Type="Boolean" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IdComplain" Type="Int32" Nullable="false" />
           <Property Name="IdIssueStatus" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbl_additional_payment" Relationship="Self.FK_tbl_additional_payment_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_additional_payment" />
           <NavigationProperty Name="tbl_assigned_service_engineer_to_issue" Relationship="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" FromRole="tbl_complain_issue" ToRole="tbl_assigned_service_engineer_to_issue" />
           <NavigationProperty Name="tbl_complain" Relationship="Self.FK_tbl_complain_issue_tbl_complain" FromRole="tbl_complain_issue" ToRole="tbl_complain" />
           <NavigationProperty Name="tbl_issue_status" Relationship="Self.FK_tbl_complain_issue_tbl_issue_status" FromRole="tbl_complain_issue" ToRole="tbl_issue_status" />
@@ -955,7 +879,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tbl_additional_payment" Relationship="Self.FK_tbl_additional_payment_tbl_payment_status" FromRole="tbl_payment_status" ToRole="tbl_additional_payment" />
           <NavigationProperty Name="tbl_vendor_payment" Relationship="Self.FK_tbl_vendor_payment_tbl_payment_status" FromRole="tbl_payment_status" ToRole="tbl_vendor_payment" />
         </EntityType>
         <EntityType Name="tbl_region">
@@ -1054,7 +977,6 @@
           <Property Name="BancAccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IFSC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tbl_additional_payment" Relationship="Self.FK_tbl_additional_payment_tbl_vendor" FromRole="tbl_vendor" ToRole="tbl_additional_payment" />
           <NavigationProperty Name="tbl_service_engineer" Relationship="Self.FK_tbl_service_engineer_tbl_vendor" FromRole="tbl_vendor" ToRole="tbl_service_engineer" />
           <NavigationProperty Name="tbl_vendor_payment" Relationship="Self.FK_tbl_vendor_payment_tbl_vendor" FromRole="tbl_vendor" ToRole="tbl_vendor_payment" />
         </EntityType>
@@ -1065,9 +987,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdVendor" Type="Int32" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="IdIssue" Type="Int32" />
+          <Property Name="IdIssue" Type="Int32" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IdPaymentStatus" Type="Int32" Nullable="false" />
+          <Property Name="PayedByCash" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbl_complain_issue" Relationship="Self.FK_tbl_vendor_payment_tbl_complain_issue" FromRole="tbl_vendor_payment" ToRole="tbl_complain_issue" />
           <NavigationProperty Name="tbl_payment_status" Relationship="Self.FK_tbl_vendor_payment_tbl_payment_status" FromRole="tbl_vendor_payment" ToRole="tbl_payment_status" />
           <NavigationProperty Name="tbl_vendor" Relationship="Self.FK_tbl_vendor_payment_tbl_vendor" FromRole="tbl_vendor_payment" ToRole="tbl_vendor" />
@@ -1105,42 +1028,6 @@
             </Principal>
             <Dependent Role="tbl_complain">
               <PropertyRef Name="IdAccount" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_complain_issue">
-          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_complain_issue">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdIssue" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_payment_status">
-          <End Role="tbl_payment_status" Type="Self.tbl_payment_status" Multiplicity="1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_payment_status">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdPaymentStatus" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbl_additional_payment_tbl_vendor">
-          <End Role="tbl_vendor" Type="Self.tbl_vendor" Multiplicity="0..1" />
-          <End Role="tbl_additional_payment" Type="Self.tbl_additional_payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_vendor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_additional_payment">
-              <PropertyRef Name="IdVendor" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1277,7 +1164,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_vendor_payment_tbl_complain_issue">
-          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="0..1" />
+          <End Role="tbl_complain_issue" Type="Self.tbl_complain_issue" Multiplicity="1" />
           <End Role="tbl_vendor_payment" Type="Self.tbl_vendor_payment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_complain_issue">
@@ -1435,7 +1322,6 @@
         <EntityContainer Name="IssueTicketingSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="tbl_account" EntityType="Self.tbl_account" />
-          <EntitySet Name="tbl_additional_payment" EntityType="Self.tbl_additional_payment" />
           <EntitySet Name="tbl_assigned_service_engineer_to_issue" EntityType="Self.tbl_assigned_service_engineer_to_issue" />
           <EntitySet Name="tbl_branch" EntityType="Self.tbl_branch" />
           <EntitySet Name="tbl_company" EntityType="Self.tbl_company" />
@@ -1470,18 +1356,6 @@
           <AssociationSet Name="FK_tbl_complain_tbl_account" Association="Self.FK_tbl_complain_tbl_account">
             <End Role="tbl_account" EntitySet="tbl_account" />
             <End Role="tbl_complain" EntitySet="tbl_complain" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_complain_issue" Association="Self.FK_tbl_additional_payment_tbl_complain_issue">
-            <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_payment_status" Association="Self.FK_tbl_additional_payment_tbl_payment_status">
-            <End Role="tbl_payment_status" EntitySet="tbl_payment_status" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_additional_payment_tbl_vendor" Association="Self.FK_tbl_additional_payment_tbl_vendor">
-            <End Role="tbl_vendor" EntitySet="tbl_vendor" />
-            <End Role="tbl_additional_payment" EntitySet="tbl_additional_payment" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" Association="Self.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue">
             <End Role="tbl_complain_issue" EntitySet="tbl_complain_issue" />
@@ -1611,18 +1485,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_additional_payment">
-            <EntityTypeMapping TypeName="IssueTicketingSystemModel.tbl_additional_payment">
-              <MappingFragment StoreEntitySet="tbl_additional_payment">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdVendor" ColumnName="IdVendor" />
-                <ScalarProperty Name="IdIssue" ColumnName="IdIssue" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="IdPaymentStatus" ColumnName="IdPaymentStatus" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_assigned_service_engineer_to_issue">
             <EntityTypeMapping TypeName="IssueTicketingSystemModel.tbl_assigned_service_engineer_to_issue">
               <MappingFragment StoreEntitySet="tbl_assigned_service_engineer_to_issue">
@@ -1670,7 +1532,6 @@
               <MappingFragment StoreEntitySet="tbl_complain">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RequstedDate" ColumnName="RequstedDate" />
-                <ScalarProperty Name="ClosingDate" ColumnName="ClosingDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Aging" ColumnName="Aging" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
@@ -1856,6 +1717,7 @@
                 <ScalarProperty Name="IdIssue" ColumnName="IdIssue" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="IdPaymentStatus" ColumnName="IdPaymentStatus" />
+                <ScalarProperty Name="PayedByCash" ColumnName="PayedByCash" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

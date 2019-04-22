@@ -17,7 +17,6 @@ namespace IssueTicketingSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbl_complain_issue()
         {
-            this.tbl_additional_payment = new HashSet<tbl_additional_payment>();
             this.tbl_assigned_service_engineer_to_issue = new HashSet<tbl_assigned_service_engineer_to_issue>();
             this.tbl_repairment = new HashSet<tbl_repairment>();
             this.tbl_replacement = new HashSet<tbl_replacement>();
@@ -28,13 +27,11 @@ namespace IssueTicketingSystem.Models
         public string Subject { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> DateFixed { get; set; }
-        public Nullable<bool> Replaced { get; set; }
+        public bool Replaced { get; set; }
         public string Remark { get; set; }
         public int IdComplain { get; set; }
         public int IdIssueStatus { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_additional_payment> tbl_additional_payment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_assigned_service_engineer_to_issue> tbl_assigned_service_engineer_to_issue { get; set; }
         public virtual tbl_complain tbl_complain { get; set; }

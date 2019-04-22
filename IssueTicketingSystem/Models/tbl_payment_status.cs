@@ -17,15 +17,12 @@ namespace IssueTicketingSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbl_payment_status()
         {
-            this.tbl_additional_payment = new HashSet<tbl_additional_payment>();
             this.tbl_vendor_payment = new HashSet<tbl_vendor_payment>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_additional_payment> tbl_additional_payment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_vendor_payment> tbl_vendor_payment { get; set; }
     }

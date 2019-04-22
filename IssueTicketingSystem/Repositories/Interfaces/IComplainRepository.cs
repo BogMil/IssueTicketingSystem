@@ -5,6 +5,6 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 {
 	public interface IComplainRepository : IGenericRepository<tbl_complain>
 	{
-
+	    string GetRefreshedStatusForComplain(int idComplain);
 	}
 }

@@ -94,7 +94,8 @@
             label: "First Name",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 },
         };
 
         const LastName = {
@@ -102,7 +103,8 @@
             label: "Last Name",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 },
         };
 
         const Email = {
@@ -110,7 +112,8 @@
             label: "Email",
             template: textColumn,
             width: 200,
-            minResizeWidth: 200
+            minResizeWidth: 200,
+            editoptions: { maxlength: 100 },
         };
 
         const IdRole= {
@@ -137,7 +140,8 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Account/CompanySelectOptions"
-            }
+            },
+            editrules: { required: false },
         };
 
         const Company= {

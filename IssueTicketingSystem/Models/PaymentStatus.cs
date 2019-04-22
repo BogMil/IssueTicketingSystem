@@ -59,7 +59,6 @@ namespace IssueTicketingSystem.Models
 
             CreateMap<PaymentStatusCommandDto, tbl_payment_status>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.id))
-                .ForMember(d => d.tbl_additional_payment, o => o.Ignore())
                 .ForMember(d => d.tbl_vendor_payment, o => o.Ignore());
 
             CreateMap<PagedList<tbl_payment_status>, StaticPagedList<PaymentStatusQueryDto>>()

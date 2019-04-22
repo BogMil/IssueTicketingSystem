@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Web;
 using AutoMapper;
 using GenericCSR;
 using GenericCSR.Service;
@@ -46,8 +48,13 @@ namespace IssueTicketingSystem.Services.CRUD
 
 	    public string NullableBranchSelectOptionsForCustomersCompany(int idLocation, int idCompany)
 	    {
-	        var selectListItems = Repository.BranchSelectOptionsForCustomersCompany(idLocation, idCompany);
-	        return DropDownCreator.CreateNullable(selectListItems, "-");
+	        List<SelectListItem> sli;
+	        if (HttpContext.Current.User.HasAnyOfRoles(CustomRoles.User, CustomRoles.Administrator))
+	            sli = Repository.BranchSelectOptions(idLocation);
+	        else
+	            sli = Repository.BranchSelectOptionsForCustomersCompany(idLocation, idCompany);
+
+	        return DropDownCreator.CreateNullable(sli, "-");
         }
 	}
 }

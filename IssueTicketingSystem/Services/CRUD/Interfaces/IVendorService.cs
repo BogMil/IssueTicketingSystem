@@ -7,5 +7,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 	{
 	    string VendorSelectOptions();
 	    string VendorToPaySelectOption(int idComplainIssue);
+	    string VendorThatCanFixComplainIssueSelectOptions(int idComplainIssue);
 	}
 }

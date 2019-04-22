@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Web;
 using AutoMapper;
 using GenericCSR;
 using GenericCSR.Service;
@@ -20,7 +22,7 @@ namespace IssueTicketingSystem.Services.CRUD
 	    public string CompanySelectOptions()
 	    {
 	        var selectListItems = Repository.CompanySelectOptions();
-	        return DropDownCreator.Create(selectListItems);
+	        return DropDownCreator.CreateNullable(selectListItems,"FMS");
 	    }
 
 	    public StaticPagedList<CompanyBranchQueryDto> BranchOfficesOfCompany(int idCompany, Pager pager, OrderByProperties orderByProperties, string filters)
@@ -36,8 +38,12 @@ namespace IssueTicketingSystem.Services.CRUD
 
 	    public string CompanyBranchSelectOptionsForCustomersCompany(int idBranch, int idCompany)
 	    {
-	        var selectListItems = Repository.CompanyBranchSelectOptionsForCustomersCompany(idBranch, idCompany);
-	        return DropDownCreator.CreateNullable(selectListItems, "-");
+	        List<SelectListItem> sli;
+	        if (HttpContext.Current.User.HasAnyOfRoles(CustomRoles.User, CustomRoles.Administrator))
+	            sli = Repository.CompanyBranchSelectOptions(idBranch);
+	        else
+                sli = Repository.CompanyBranchSelectOptionsForCustomersCompany(idBranch, idCompany);
+	        return DropDownCreator.CreateNullable(sli, "-");
         }
 	}
 }

@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "Complains";
+}
+<div>
+    <div style="text-align: center; width:100% ">
+        <h2>Complains</h2>
+    </div>
+    <div align="center" style=" overflow-x: auto;width:100%">
+        <table style="margin-left: auto; margin-right: auto; " id="MisJqGridTable"></table>
+        <div id="MisJqGridPager"></div>
+    </div>
+    
+    <button id="export">asd</button>
+</div>
+<style>
+    tr.jqgrow td {
+        padding: 2px !important;
+    }
+</style>
+
+@section scripts{
+    <script>
+
+        var jqGridId = "#MisJqGridTable";
+        var pagerId = "#MisJqGridPager";
+        var controller = "Report";
+        var baseUrl = "/" + controller;
+
+        $(document).ready(function() {
+
+            $(jqGridId).jqGrid({
+                url: baseUrl + "/MisData",
+                loadonce: true,
+                colModel: colModel,
+                //pager: pagerId,
+                gridComplete: function() { setMaxHeightForElement(jqGridId); },
+                shrinkToFit: false,
+                width: 900,
+                grouping: true,
+                groupingView: {
+                    groupField: ['RequestedDate', 'Company', 'State', 'Region', 'Location', 'Branch', 'Address', 'TypeOfComplain','Complain'],
+                    //grouporder: ['asc'],
+                    groupText: ['{0}', '{0}', '{0}', '{0}', '{0}', '{0}', '{0}', 'TypeOfComplain:{0}', 'Complain:{0}'],
+                    //groupColumnShow: [false, false, false, false, false, false, false, false, false]
+                },
+            });
+
+            $("#export").click(function () {
+                fnExcelReport();
+                function fnExcelReport()
+                {
+                    var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+                    var textRange; var j=0;
+                    var tab = document.getElementById('headerTable'); // id of table
+
+                    for(j = 0 ; j < tab.rows.length ; j++) 
+                    {     
+                        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+                        //tab_text=tab_text+"</tr>";
+                    }
+
+                    tab_text=tab_text+"</table>";
+                    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+                    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+                    var ua = window.navigator.userAgent;
+                    var msie = ua.indexOf("MSIE "); 
+
+                    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                    {
+                        txtArea1.document.open("txt/html","replace");
+                        txtArea1.document.write(tab_text);
+                        txtArea1.document.close();
+                        txtArea1.focus(); 
+                        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+                    }  
+                    else                 //other browser not tested on IE 11
+                        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+                    return (sa);
+                }
+            });
+
+        });
+
+        //
+
+
+        const RegionalAdmin = { name: "RegionalAdmin", label: "RegionalAdmin", template: textColumn }
+        const Company = { name: "Company", label: "Company", template: textColumn }
+        const State = { name: "State", label: "State", template: textColumn }
+        const Region = { name: "Region", label: "Region", template: textColumn }
+        const Location = { name: "Location", label: "Location", template: textColumn }
+        const Branch = { name: "Branch", label: "Branch", template: textColumn }
+        const Address = { name: "Address", label: "Address", template: textColumn }
+        const TypeOfComplain = { name: "TypeOfComplain", label: "TypeOfComplain", template: textColumn }
+        const RequestedDate = { name: "RequestedDate", label: "RequestedDate", template: textColumn }
+        const Complain = { name: "Complain", label: "Complain", template: textColumn }
+        const Issue = { name: "Issue", label: "Issue", template: textColumn }
+        const IssueDescription = { name: "IssueDescription", label: "IssueDescription", template: textColumn }
+        const CloseDate = { name: "CloseDate", label: "CloseDate", template: textColumn }
+        const Aging = { name: "Aging", label: "Aging", template: textColumn }
+        const Status = { name: "Status", label: "Status", template: textColumn }
+        const Remark = { name: "Remark", label: "Remark", template: textColumn }
+        const Vendor = { name: "Vendor", label: "Vendor", template: textColumn }
+        const IFSC = { name: "IFSC", label: "IFSC", template: textColumn }
+        const Amount = { name: "Amount", label: "Amount", template: textColumn }
+        const PaymentStatus = { name: "PaymentStatus", label: "PaymentStatus", template: textColumn }
+        const Engineer = { name: "Engineer", label: "Engineer", template: textColumn }
+
+
+        const colModel = [
+            RegionalAdmin,
+            Company,
+            State,
+            Region,
+            Location,
+            Branch,
+            Address,
+            TypeOfComplain,
+            RequestedDate,
+            Complain,
+            Issue,
+            IssueDescription,
+            CloseDate,
+            Aging,
+            Status,
+            Remark,
+            Vendor,
+            IFSC,
+            Amount,
+            PaymentStatus,
+            Engineer,
+        ];
+
+        //ISSUES
+
+
+    </script>
+}
+

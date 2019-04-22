@@ -35,6 +35,7 @@ namespace IssueTicketingSystem.Controllers
         private readonly IRepairmentService _repairmentService;
         private readonly IVendorPaymentService _vendorPaymentService;
         private readonly IPaymentStatusService _paymentStatusService;
+        private readonly IIssueStatusService _issueStatusService;
 
 
         public ComplainController(IComplainService service, ITypeOfComplainService typeOfComplainService,
@@ -44,7 +45,7 @@ namespace IssueTicketingSystem.Controllers
             IAssignmentService assignmentService, IReplacementService replacementService,
             IPartTypeService partTypeService, IPartService partService,
             IPartStatusService partStatusService, IRepairmentService repairmentService, 
-            IVendorPaymentService vendorPaymentService, IPaymentStatusService paymentStatusService) : base(service)
+            IVendorPaymentService vendorPaymentService, IPaymentStatusService paymentStatusService, IIssueStatusService issueStatusService) : base(service)
         {
             _typeOfComplainService = typeOfComplainService;
             _locationService = locationService;
@@ -63,6 +64,7 @@ namespace IssueTicketingSystem.Controllers
             _repairmentService = repairmentService;
             _vendorPaymentService = vendorPaymentService;
             _paymentStatusService = paymentStatusService;
+            _issueStatusService = issueStatusService;
         }
 
         public ActionResult Index()
@@ -76,21 +78,35 @@ namespace IssueTicketingSystem.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ComplainsOfCompany(Pager pager, OrderByProperties orderByProperties, string filters)
+        {
+            var data = Service.ComplainsOfCompany(pager, orderByProperties, filters);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         public string TypeOfComplainSelectOptions() => _typeOfComplainService.TypeOfComplainSelectOptions();
         public string StateSelectOptions() => _stateService.NullableStateSelectOptionsForCustomersCompany(User.GetIdCompany());
         public string RegionSelectOptions(int idState) => _regionService.NullableRegionSelectOptionsForCustomersCompany(idState, User.GetIdCompany());
         public string LocationSelectOptions(int idRegion) => _locationService.NullableLocationSelectOptionsForCustomersCompany(idRegion, User.GetIdCompany());
         public string BranchSelectOptions(int idLocation) => _branchService.NullableBranchSelectOptionsForCustomersCompany(idLocation, User.GetIdCompany());
         public string CompanyBranchSelectOptions(int idBranch) => _companyService.CompanyBranchSelectOptionsForCustomersCompany(idBranch, User.GetIdCompany());
-        public string VendorSelectOptions() => _vendorService.VendorSelectOptions();
+        public string VendorSelectOptions() => _vendorService.VendorSelectOptions();//delete;
         public string ServiceEngineerOfVendorSelectOptions(int? idVendor = null) => _serviceEngineerService.ServiceEngineerOfVendorSelectOptions(idVendor);
         public string PartTypeThatHavePartsSelectOption() => _partTypeService.PartTypeThatHavePartsSelectOption();
         public string PartsOfPartTypeSelectOption(int idPartType) => _partService.PartsOfPartTypeSelectOption(idPartType);
         public string PartStatusSelectOption() => _partStatusService.PartStatusSelectOption();
         public string PaymentStatusSelectOptions() => _paymentStatusService.PaymentStatusSelectOptions();
         public string VendorToPaySelectOption(int idComplainIssue) => _vendorService.VendorToPaySelectOption(idComplainIssue);
-
+        public string IssueStatusSelectOptions() => _issueStatusService.IssueStatusSelectOptions();
+        public string VendorThatCanFixComplainIssueSelectOptions(int idComplainIssue) => _vendorService.VendorThatCanFixComplainIssueSelectOptions(idComplainIssue);
+        public string GetRefreshedStatusForComplain(int idComplain) => Service.GetRefreshedStatusForComplain(idComplain);
         public string Empty() => "<select><option>-</option></select>";
+
+        public ActionResult GetEditSelectValues(int idComplain)
+        {
+            var esv = Service.GetEditSelectValues(idComplain);
+            return Json(esv, JsonRequestBehavior.AllowGet);
+        }
 
         #region COMPLAIN ISSUE
         public ActionResult CreateComplainIssue(ComplainIssueCommandDto dto)

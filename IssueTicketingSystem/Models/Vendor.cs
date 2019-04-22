@@ -73,8 +73,7 @@ namespace IssueTicketingSystem.Models
             CreateMap<VendorCommandDto, tbl_vendor>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.id))
                 .ForMember(s => s.tbl_service_engineer, o => o.Ignore())
-                .ForMember(s => s.tbl_vendor_payment, o => o.Ignore())
-                .ForMember(s => s.tbl_additional_payment, o => o.Ignore());
+                .ForMember(s => s.tbl_vendor_payment, o => o.Ignore());
 
             CreateMap<PagedList<tbl_vendor>, StaticPagedList<VendorQueryDto>>()
                 .ConvertUsing<PagedListConverter<tbl_vendor, VendorQueryDto>>();

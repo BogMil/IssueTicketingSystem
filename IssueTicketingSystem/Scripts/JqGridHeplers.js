@@ -214,13 +214,13 @@ var dateColumn = {
         },
         dataEvents: [
             {
-                type: 'keydown', fn: function (e) {
-                    if (e.keyCode !== 9) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
+                //type: 'keydown', fn: function (e) {
+                //    if (e.keyCode !== 9) {
+                //        e.preventDefault();
+                //        e.stopPropagation();
+                //    }
 
-                }
+                //}
             }
         ]
     },
@@ -258,10 +258,10 @@ var dateColumn = {
         sopt: ["eq", "lt", "le", "gt", "ge"],
         dataEvents: [
             {
-                type: 'keydown', fn: function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
+                //type: 'keydown', fn: function (e) {
+                //    e.preventDefault();
+                //    e.stopPropagation();
+                //}
             }
         ]
     },

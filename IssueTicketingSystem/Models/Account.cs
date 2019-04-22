@@ -17,7 +17,7 @@ namespace IssueTicketingSystem.Models
         public string Password { get; set; }
         public int IdRole { get; set; }
         public bool Active { get; set; }
-        public int IdCompany { get; set; }
+        public int? IdCompany { get; set; }
     }
 
     public class AccountQueryDto : Account
@@ -85,7 +85,7 @@ namespace IssueTicketingSystem.Models
         public AccountMappingProfile()
         {
             CreateMap<tbl_account, AccountQueryDto>()
-                .ForMember(d => d.Company, o => o.MapFrom(s => s.tbl_company.Name))
+                .ForMember(d => d.Company, o => o.MapFrom(s => s.tbl_company != null ? s.tbl_company.Name : "FMS"))
                 .ForMember(d => d.Role, o => o.MapFrom(s => s.tbl_roles.Name))
                 .ForMember(d => d.Password, o => o.Ignore());
 

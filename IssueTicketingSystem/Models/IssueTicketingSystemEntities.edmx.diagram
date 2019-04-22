@@ -4,39 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="470e3f17c24d44eda22ecac9394795bf" Name="Diagram1">
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_account" Width="1.5" PointX="3" PointY="11.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_additional_payment" Width="1.5" PointX="12.75" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_assigned_service_engineer_to_issue" Width="1.5" PointX="15.75" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_branch" Width="1.5" PointX="3.75" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_company" Width="1.5" PointX="0.75" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_company_branch" Width="1.5" PointX="6" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_complain" Width="1.5" PointX="8.25" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_complain_issue" Width="1.5" PointX="10.5" PointY="11.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_engineer_profession" Width="1.5" PointX="15.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_issue_status" Width="1.5" PointX="8.25" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_location" Width="1.5" PointX="1.5" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part" Width="1.5" PointX="10.5" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part_status" Width="1.5" PointX="10.5" PointY="16.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part_types" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_payment_status" Width="1.5" PointX="13.5" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_region" Width="1.5" PointX="1.5" PointY="19.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_repairment" Width="1.5" PointX="12.75" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_replacement" Width="1.5" PointX="12.75" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_roles" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_service_engineer" Width="1.5" PointX="13.5" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_state" Width="1.5" PointX="1.5" PointY="22.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_type_of_complain" Width="1.5" PointX="6" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_unit" Width="1.5" PointX="8.25" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_vendor" Width="1.5" PointX="13.5" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_vendor_payment" Width="1.5" PointX="15.75" PointY="7.875" IsExpanded="true" />
+      <Diagram DiagramId="c32a7ee8419e4c20a76bc4f46a4fa4a1" Name="Diagram1">
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_account" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_assigned_service_engineer_to_issue" Width="1.5" PointX="12.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_branch" Width="1.5" PointX="3.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_company" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_company_branch" Width="1.5" PointX="6" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_complain" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_complain_issue" Width="1.5" PointX="10.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_engineer_profession" Width="1.5" PointX="15.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_issue_status" Width="1.5" PointX="8.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_location" Width="1.5" PointX="1.5" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part" Width="1.5" PointX="10.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part_status" Width="1.5" PointX="10.5" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_part_types" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_payment_status" Width="1.5" PointX="10.5" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_region" Width="1.5" PointX="1.5" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_repairment" Width="1.5" PointX="15.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_replacement" Width="1.5" PointX="12.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_roles" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_service_engineer" Width="1.5" PointX="10.5" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_state" Width="1.5" PointX="1.5" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_type_of_complain" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_unit" Width="1.5" PointX="8.25" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_vendor" Width="1.5" PointX="8.25" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_vendor_payment" Width="1.5" PointX="12.75" PointY="12.875" IsExpanded="true" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_account_tbl_company" ManuallyRouted="false" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_account_tbl_roles" ManuallyRouted="false" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_complain_tbl_account" ManuallyRouted="false" />
-        <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_additional_payment_tbl_complain_issue" ManuallyRouted="false" />
-        <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_additional_payment_tbl_payment_status" ManuallyRouted="false" />
-        <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_additional_payment_tbl_vendor" ManuallyRouted="false" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_assigned_service_engineer_to_issue_tbl_complain_issue" ManuallyRouted="false" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_assigned_service_engineer_to_issue_tbl_service_engineer" ManuallyRouted="false" />
         <AssociationConnector Association="IssueTicketingSystemModel.FK_tbl_branch_tbl_location" ManuallyRouted="false" />

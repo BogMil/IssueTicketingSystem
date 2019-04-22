@@ -17,7 +17,6 @@ namespace IssueTicketingSystem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbl_vendor()
         {
-            this.tbl_additional_payment = new HashSet<tbl_additional_payment>();
             this.tbl_service_engineer = new HashSet<tbl_service_engineer>();
             this.tbl_vendor_payment = new HashSet<tbl_vendor_payment>();
         }
@@ -29,8 +28,6 @@ namespace IssueTicketingSystem.Models
         public string IFSC { get; set; }
         public bool Active { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_additional_payment> tbl_additional_payment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_service_engineer> tbl_service_engineer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

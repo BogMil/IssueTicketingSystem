@@ -95,7 +95,9 @@
             label: "FirstName",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 20 }
+
         };
 
         const LastName = {
@@ -103,7 +105,9 @@
             label: "LastName",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 }
+
         };
 
         const MiddleName = {
@@ -111,7 +115,10 @@
             label: "MiddleName",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 },
+            editrules: {required: false},
+
         };
 
         const ContactNumber = {
@@ -119,7 +126,9 @@
             label: "ContactNumber",
             template: textColumn,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            editoptions: { maxlength: 50 },
+            editrules: { required: false },
         };
 
 

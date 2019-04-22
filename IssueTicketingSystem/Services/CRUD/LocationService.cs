@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Web;
 using AutoMapper;
 using GenericCSR;
 using GenericCSR.Service;
@@ -39,7 +41,12 @@ namespace IssueTicketingSystem.Services.CRUD
 
 	    public string NullableLocationSelectOptionsForCustomersCompany(int idRegion, int idCompany)
 	    {
-	        var sli = Repository.LocationSelectOptionsForCustomersCompany(idRegion, idCompany);
+	        List<SelectListItem> sli;
+	        if (HttpContext.Current.User.HasAnyOfRoles(CustomRoles.User, CustomRoles.Administrator))
+	            sli = Repository.LocationSelectOptions(idRegion);
+	        else
+	            sli = Repository.LocationSelectOptionsForCustomersCompany(idRegion, idCompany);
+
 	        return DropDownCreator.CreateNullable(sli, "-");
         }
 	}

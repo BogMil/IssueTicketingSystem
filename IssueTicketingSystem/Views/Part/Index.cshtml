@@ -91,7 +91,8 @@
             label: "Name",
             template: textAreaColumn,
             width: 300,
-            minResizeWidth: 300
+            minResizeWidth: 300,
+            editoptions: { maxlength: 50 },
         };
 
         const Description = {
@@ -99,7 +100,9 @@
             label: "Description",
             template: textAreaColumn,
             width: 300,
-            minResizeWidth: 300
+            minResizeWidth: 300,
+            editoptions: { maxlength: 500 },
+            editrules: { required: false },
         };
 
         const IdUnit = {

@@ -8,5 +8,7 @@ namespace IssueTicketingSystem.Repositories.Interfaces
 	{
 	    List<SelectListItem> CompanySelectOptions();
 	    List<SelectListItem> CompanyBranchSelectOptionsForCustomersCompany(int idBranch, int idCompany);
+	    List<SelectListItem> CompanyBranchSelectOptions(int idBranch);
+
 	}
 }

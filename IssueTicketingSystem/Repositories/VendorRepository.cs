@@ -19,7 +19,7 @@ namespace IssueTicketingSystem.Repositories
             return entity.Id;
         }
 
-        public List<SelectListItem> VendorSelectOptions()
+        public List<SelectListItem> VendorThatHaveEngineersSelectOptions()
         {
             return Db.tbl_vendor
                 .Where(x => x.Active)
@@ -47,9 +47,27 @@ namespace IssueTicketingSystem.Repositories
                 .ToList();
         }
 
+        public List<SelectListItem> VendorSelectOptions()
+        {
+            return Db.tbl_vendor
+                .Where(x => x.Active)
+                .OrderBy(x => x.Name)
+                .Select(x => new SelectListItem() { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        }
+
+        public List<SelectListItem> VendorThatCanFixComplainTypeSelectOptions(int idTypeOfComplain)
+        {
+            return Db.tbl_engineer_profession.Where(x => x.IdTypeOfComplain == idTypeOfComplain)
+                .Select(x => new SelectListItem()
+                {
+                    Text = x.tbl_service_engineer.tbl_vendor != null? x.tbl_service_engineer.tbl_vendor.Name : "FMS",
+                    Value = x.tbl_service_engineer.tbl_vendor.Id.ToString()
+                }).Distinct().ToList();
+        }
+
         protected override void ShouldDeleteEntity(tbl_vendor entity)
         {
-            if(entity.tbl_additional_payment.Count>0 ||
+            if(
                entity.tbl_service_engineer.Count>0 ||
                entity.tbl_vendor_payment.Count>0)
                 throw  new Exception("Unable to delete. Selected Vendor may have service engineers and/or is included in payments");

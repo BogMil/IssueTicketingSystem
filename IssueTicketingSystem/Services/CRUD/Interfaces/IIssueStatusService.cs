@@ -5,6 +5,6 @@ namespace IssueTicketingSystem.Services.CRUD.Interfaces
 {
 	public interface IIssueStatusService : IGenericService<IssueStatusQueryDto,IssueStatusCommandDto>
 	{
-
+	    string IssueStatusSelectOptions();
 	}
 }

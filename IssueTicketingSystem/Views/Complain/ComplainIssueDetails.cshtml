@@ -119,7 +119,7 @@
                 beforeSubmit: function (postData) {
                     postData.IdIssue = idComplainIssue;
                     return [true, ""];
-                },
+                }
             };
 
             const editModalOptions = {
@@ -187,7 +187,7 @@
                 label: "Vendor",
                 template: SelectForCreateOrUpdate,
                 editoptions: {
-                    dataUrl: "/Complain/VendorSelectOptions",
+                    dataUrl: "/Complain/VendorThatCanFixComplainIssueSelectOptions?idComplainIssue=" + idComplainIssue,
                     dataEvents: [
                         {
                             type: 'change',
@@ -354,7 +354,9 @@
                 label: "Remark",
                 template: textAreaColumn,
                 width: 150,
-                minResizeWidth: 150
+                minResizeWidth: 150,
+                editoptions: { maxlength: 500 },
+                editrules: { required: false },
             };
 
             const colModel = [
@@ -548,7 +550,9 @@
                 label: "Remark",
                 template: textAreaColumn,
                 width: 150,
-                minResizeWidth: 150
+                minResizeWidth: 150,
+                editoptions: { maxlength: 500 },
+                editrules: { required: false },
             };
 
             const colModel = [
@@ -727,7 +731,9 @@
                 label: "Remark",
                 template: textAreaColumn,
                 width: 150,
-                minResizeWidth: 150
+                minResizeWidth: 150,
+                editoptions: { maxlength: 500 },
+                editrules: { required: false },
             };
 
             const colModel = [
@@ -861,7 +867,9 @@
                 label: "Remark",
                 template: textAreaColumn,
                 width: 150,
-                minResizeWidth: 150
+                minResizeWidth: 150,
+                editoptions: { maxlength: 500 },
+                editrules: { required: false },
             };
 
             const colModel = [

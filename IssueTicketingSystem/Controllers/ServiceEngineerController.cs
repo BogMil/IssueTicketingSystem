@@ -10,7 +10,8 @@ using IssueTicketingSystem.Services.CRUD.Interfaces;
 namespace IssueTicketingSystem.Controllers
 {
     [AuthorizeRoles(
-        CustomRoles.Administrator
+        CustomRoles.Administrator,
+        CustomRoles.User
     )]
     public class ServiceEngineerController :
             GenericController<IServiceEngineerService, ServiceEngineerViewModel, ServiceEngineerQueryDto, ServiceEngineerCommandDto>

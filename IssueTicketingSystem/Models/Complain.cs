@@ -12,7 +12,7 @@ namespace IssueTicketingSystem.Models
     public class Complain
     {
         public string Status { get; set; }
-        public int IdAccount { get; set; }
+        public int? IdAccount { get; set; }
         public int IdTypeOfComplain { get; set; }
         public int IdCompanyBranch { get; set; }
         public string Aging { get; set; }
@@ -23,7 +23,6 @@ namespace IssueTicketingSystem.Models
     {
         public int Id { get; set; }
         public string RequstedDate { get; set; }
-        public string ClosingDate { get; set; }
         public string CustomerWhoRaisedIssue { get; set; }
         public string TypeOfComplain { get; set; }
         public string Company { get; set; }
@@ -57,8 +56,6 @@ namespace IssueTicketingSystem.Models
                 return x => x.Id;
             if (fieldName == GetDtoPropertyPathAsString(t => t.RequstedDate))
                 return x => x.RequstedDate;
-            if (fieldName == GetDtoPropertyPathAsString(t => t.ClosingDate))
-                return x => x.ClosingDate;
             if (fieldName == GetDtoPropertyPathAsString(t => t.Status))
                 return x => x.Status;
             if (fieldName == GetDtoPropertyPathAsString(t => t.IdAccount))
@@ -76,6 +73,15 @@ namespace IssueTicketingSystem.Models
             "  Obezbediti da za svako polje iz QueryDto modela postoji odgovarajuce mapiranje u entity modelu (bazi).");
         }
 
+    }
+
+    public class ComplainEditSelectValues
+    {
+        public int IdState { get; set; }
+        public int IdRegion { get; set; }
+        public int IdLocation { get; set; }
+        public int IdBranch { get; set; }
+        public int IdCompanyBranch { get; set; }
     }
 
     public class ComplainMappingProfile : Profile
@@ -105,6 +111,13 @@ namespace IssueTicketingSystem.Models
 
             CreateMap<PagedList<tbl_complain>, StaticPagedList<ComplainQueryDto>>()
                 .ConvertUsing<PagedListConverter<tbl_complain, ComplainQueryDto>>();
+
+            CreateMap<tbl_complain, ComplainEditSelectValues>()
+                .ForMember(d => d.IdState, o => o.MapFrom(s => s.tbl_company_branch.tbl_branch.tbl_location.tbl_region.tbl_state.Id))
+                .ForMember(d => d.IdRegion, o => o.MapFrom(s => s.tbl_company_branch.tbl_branch.tbl_location.tbl_region.Id))
+                .ForMember(d => d.IdLocation, o => o.MapFrom(s => s.tbl_company_branch.tbl_branch.tbl_location.Id))
+                .ForMember(d => d.IdBranch, o => o.MapFrom(s => s.tbl_company_branch.tbl_branch.Id))
+                .ForMember(d => d.IdCompanyBranch, o => o.MapFrom(s => s.tbl_company_branch.Id));
         }
     }
 }

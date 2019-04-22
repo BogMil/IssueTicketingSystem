@@ -17,9 +17,10 @@ namespace IssueTicketingSystem.Models
         public int Id { get; set; }
         public Nullable<int> IdVendor { get; set; }
         public decimal Amount { get; set; }
-        public Nullable<int> IdIssue { get; set; }
+        public int IdIssue { get; set; }
         public string Remark { get; set; }
         public int IdPaymentStatus { get; set; }
+        public bool PayedByCash { get; set; }
     
         public virtual tbl_complain_issue tbl_complain_issue { get; set; }
         public virtual tbl_payment_status tbl_payment_status { get; set; }

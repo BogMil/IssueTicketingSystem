@@ -17,13 +17,20 @@
         <table style="margin-left: auto; margin-right: auto; " id="ComplainIssueJqGridTable"></table>
         <div id="ComplainIssueJqGridPager"></div>
     </div>
+
 </div>
 <style>
     tr.jqgrow td {
         padding: 2px !important;
     }
-</style>
 
+    span.cellWithoutBackground {
+        display: block;
+        background-image: none;
+        margin-right: -1px;
+        margin-left: -1px;
+    }
+</style>
 
 @section scripts{
     <script>
@@ -38,16 +45,16 @@
         var complainIssueController = "Complain";
         var complainIssueBaseUrl = "/" + complainIssueController;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             $(jqGridId).jqGrid({
-                url: baseUrl + "/AjaxJqGrid",
+                url: baseUrl + "/ComplainsOfCompany",
                 colModel: colModel,
                 pager: pagerId,
-                gridComplete: function () { setMaxHeightForElement(jqGridId); },
+                gridComplete: function() { setMaxHeightForElement(jqGridId); },
                 shrinkToFit: false,
                 width: 900,
-                onSelectRow: function (rowId) {
+                onSelectRow: function(rowId) {
                     if (rowId != null) {
                         var data = GetSelectedRowData($(jqGridId));
                         $(complainIssueJqGridId).jqGrid('setGridParam',
@@ -78,34 +85,56 @@
 
             //
 
-            $(complainIssueJqGridId).jqGrid({
-                url: complainIssueBaseUrl + "/Empty",
-                colModel: complainIssueColModel,
-                pager: complainIssuePagerId,
-                gridComplete: function () { setMaxHeightForElement(complainIssueJqGridId); },
-                width: 900,
-                shrinkToFit: true,
-                sortable:false
-            });
+        $(complainIssueJqGridId).jqGrid({
+            url: complainIssueBaseUrl + "/Empty",
+            colModel: complainIssueColModel,
+            pager: complainIssuePagerId,
+            gridComplete: function() { setMaxHeightForElement(complainIssueJqGridId); },
+            width: 900,
+            shrinkToFit: true,
+            sortable: false,
+            onSelectRow: function(rowId) {
+                @{
+                    if (User.IsInRole(CustomRoles.Customer))
+                    {<text>
+                        var issueStatus = GetSelectedRowData($(complainIssueJqGridId)).IssueStatus;
+                        if (issueStatus != "Open")
+                        {
+                            disableDelete($(complainIssueJqGridId));
+                            disableEdit($(complainIssueJqGridId));
+                        }
+                        else
+                        {
+                            enableDelete($(complainIssueJqGridId));
+                            enableEdit($(complainIssueJqGridId));
+                        }
 
-            $(complainIssueJqGridId).navGrid(
-                complainIssuePagerId,
-                complainIssueNavgridOptions,
-                complainIssueEditModalOptions,
-                complainIssueCreateModalOptions,
-                complainIssueDeleteModalOptions,
-                complainIssueSearchModalOptions,
-                complainIssueViewModalOptions
-            );
+                    </text>
 
-            //$(complainIssueJqGridId).jqGrid("filterToolbar",
-            //    {
-            //        stringResult: true,
-            //        searchOperators: true
-            //    }
-            //);
-
+                    }
+                }
+                
+            }
         });
+
+        $(complainIssueJqGridId).navGrid(
+            complainIssuePagerId,
+            complainIssueNavgridOptions,
+            complainIssueEditModalOptions,
+            complainIssueCreateModalOptions,
+            complainIssueDeleteModalOptions,
+            complainIssueSearchModalOptions,
+            complainIssueViewModalOptions
+        );
+
+        //$(complainIssueJqGridId).jqGrid("filterToolbar",
+        //    {
+        //        stringResult: true,
+        //        searchOperators: true
+        //    }
+        //);
+
+    });
 
         const width = 300;
 
@@ -113,24 +142,25 @@
 
         const createModalOptions = {
             url: baseUrl + "/AjaxCreate",
-            beforeShowForm: function () { },
+            beforeShowForm: function() {},
             width: width
         };
 
         const editModalOptions = {
             url: baseUrl + "/AjaxUpdate",
             width: width,
-            beforeShowForm: function () {
-                var idCompanyBranch = GetSelectedRowData($(jqGridId)).IdCompanyBranch;
+            beforeShowForm: function() {
+                var idComplain = GetSelectedRowData($(jqGridId)).Id;
                 $.ajax({
                     url: "/Complain/GetEditSelectValues",
-                    data: { idCompanyBranch: idCompanyBranch },
-                    success: function (result) {
-
+                    data: { idComplain: idComplain},
+                    success: function(result) {
+                        console.log(result);
                         populateStateAndSelectValue(result.IdState);
                         populateRegionAndSelectValue(result.IdState, result.IdRegion);
                         populateLocationAndSelectValue(result.IdRegion, result.IdLocation);
                         populateBranchAndSelectValue(result.IdLocation, result.IdBranch);
+                        populateCompanyBranchAndSelectValue(result.IdBranch, result.IdCompanyBranch);
                     }
                 });
             }
@@ -150,7 +180,7 @@
         function populateStateAndSelectValue(idState) {
             $.ajax({
                 url: "/Complain/StateSelectOptions",
-                success: function (result) {
+                success: function(result) {
                     var options = removeSelectTag(result);
                     $("#IdState").html(options);
                     $("#IdState").val(idState);
@@ -162,7 +192,7 @@
             $.ajax({
                 url: "/Complain/RegionSelectOptions",
                 data: { idState: idState },
-                success: function (result) {
+                success: function(result) {
                     var options = removeSelectTag(result);
                     $("#IdRegion").html(options);
                     $("#IdRegion").val(idRegion);
@@ -175,7 +205,7 @@
             $.ajax({
                 url: "/Complain/LocationSelectOptions",
                 data: { idRegion: idRegion },
-                success: function (result) {
+                success: function(result) {
                     var options = removeSelectTag(result);
                     $("#IdLocation").html(options);
                     $("#IdLocation").val(idLocation);
@@ -187,7 +217,7 @@
             $.ajax({
                 url: "/Complain/BranchSelectOptions",
                 data: { idLocation: idLocation },
-                success: function (result) {
+                success: function(result) {
                     var options = removeSelectTag(result);
                     $("#IdBranch").html(options);
                     $("#IdBranch").val(idBranch);
@@ -195,6 +225,17 @@
             });
         }
 
+        function populateCompanyBranchAndSelectValue(idBranch, idCompanyBranch) {
+            $.ajax({
+                url: "/Complain/CompanyBranchSelectOptions",
+                data: { idBranch: idBranch },
+                success: function (result) {
+                    var options = removeSelectTag(result);
+                    $("#IdCompanyBranch").html(options);
+                    $("#IdCompanyBranch").val(idCompanyBranch);
+                }
+            });
+        }
         //
         const State = {
             name: "IdState",
@@ -202,19 +243,19 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Complain/StateSelectOptions",
-                dataInit: function (elem) {
+                dataInit: function(elem) {
                     $(elem).attr('id', 'IdState');
                 },
                 dataEvents: [
                     {
                         type: 'change',
-                        fn: function (e) {
+                        fn: function(e) {
                             var idState = e.target.value;
                             if (idState) {
                                 $.ajax({
                                     url: "/Complain/RegionSelectOptions",
                                     data: { idState: idState },
-                                    success: function (result) {
+                                    success: function(result) {
                                         var options = removeSelectTag(result);
                                         $("#IdRegion").html(options);
                                         $("#IdLocation").html("<option>-</option>");
@@ -240,19 +281,19 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Complain/Empty",
-                dataInit: function (elem) {
+                dataInit: function(elem) {
                     $(elem).attr('id', 'IdRegion');
                 },
                 dataEvents: [
                     {
                         type: 'change',
-                        fn: function (e) {
+                        fn: function(e) {
                             var idRegion = e.target.value;
                             if (idRegion) {
                                 $.ajax({
                                     url: "/Complain/LocationSelectOptions",
                                     data: { idRegion: idRegion },
-                                    success: function (result) {
+                                    success: function(result) {
                                         var options = removeSelectTag(result);
                                         $("#IdLocation").html(options);
                                         $("#IdBranch").html("<option>-</option>");
@@ -276,19 +317,19 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Complain/Empty",
-                dataInit: function (elem) {
+                dataInit: function(elem) {
                     $(elem).attr('id', 'IdLocation');
                 },
                 dataEvents: [
                     {
                         type: 'change',
-                        fn: function (e) {
+                        fn: function(e) {
                             var idLocation = e.target.value;
                             if (idLocation) {
                                 $.ajax({
                                     url: "/Complain/BranchSelectOptions",
                                     data: { idLocation: idLocation },
-                                    success: function (result) {
+                                    success: function(result) {
                                         var options = removeSelectTag(result);
                                         $("#IdBranch").html(options);
                                         $("#IdCompanyBranch").html("<option>-</option>");
@@ -310,19 +351,19 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Company/Empty",
-                dataInit: function (elem) {
+                dataInit: function(elem) {
                     $(elem).attr('id', 'IdBranch');
                 },
                 dataEvents: [
                     {
                         type: 'change',
-                        fn: function (e) {
+                        fn: function(e) {
                             var idBranch = e.target.value;
                             if (idBranch) {
                                 $.ajax({
                                     url: "/Complain/CompanyBranchSelectOptions",
                                     data: { idBranch: idBranch },
-                                    success: function (result) {
+                                    success: function(result) {
                                         var options = removeSelectTag(result);
                                         $("#IdCompanyBranch").html(options);
                                     }
@@ -394,7 +435,15 @@
             template: textColumn,
             width: 150,
             minResizeWidth: 150,
-            editable: false
+            editable: false,
+            formatter: function(cellvalue, options, rowObject) {
+                if (cellvalue == "Open")
+                    return '<span class="cellWithoutBackground" style="background-color:#FF6F6F">' +
+                        cellvalue +
+                        '</span>';
+
+                return '<span>' + cellvalue + '</span>';
+            },
         };
 
         const CustomerWhoRaisedIssue = {
@@ -419,7 +468,9 @@
             label: "Remark",
             template: textAreaColumn,
             width: 200,
-            minResizeWidth: 200
+            minResizeWidth: 200,
+            editoptions: { maxlength: 1000 },
+            editrules: { required: false },
         };
 
         const RequstedDate = {
@@ -442,21 +493,21 @@
             IdCompanyBranch, CompanyBranch,
             IdTypeOfComplain, TypeOfComplain,
             Company,
-            ClosingDate,
+            //ClosingDate,
             Aging,
             Remark,
             CustomerWhoRaisedIssue,
             RequstedDate,
         ];
 
-            //ISSUES
+        //ISSUES
 
         const complainIssueNavgridOptions = { view: false };
 
         const complainIssueCreateModalOptions = {
             url: baseUrl + "/CreateComplainIssue",
             width: width,
-            beforeSubmit: function (postData) {
+            beforeSubmit: function(postData) {
                 postData.IdComplain = GetSelectedRowData($(jqGridId)).Id;
                 return [true, ""];
             },
@@ -465,9 +516,21 @@
         const complainIssueEditModalOptions = {
             url: baseUrl + "/UpdateComplainIssue",
             width: width,
-            beforeSubmit: function (postData) {
+            beforeSubmit: function(postData) {
                 postData.IdComplain = GetSelectedRowData($(jqGridId)).Id;
                 return [true, ""];
+            },
+            afterSubmit: function (response, postdata) {
+
+                $.ajax({
+                    url: "/Complain/GetRefreshedStatusForComplain?idComplain="+GetSelectedRowData($(jqGridId)).Id,
+                    success: function(result) {
+                        var rowData = GetSelectedRowData($(jqGridId));
+                        rowData.Status = result;
+                        $(jqGridId).jqGrid('setRowData', rowData.Id, rowData);
+                    }
+                });
+                return [""];
             }
         };
 
@@ -486,7 +549,8 @@
             label: "Subject",
             template: textAreaColumn,
             width: 200,
-            minResizeWidth: 200
+            minResizeWidth: 200,
+            editoptions: { maxlength: 200 },
         };
 
         const Description = {
@@ -494,7 +558,9 @@
             label: "Description",
             template: textAreaColumn,
             width: 300,
-            minResizeWidth: 300
+            minResizeWidth: 300,
+            editoptions: { maxlength: 1000 },
+            editrules: { required: false },
         };
 
         const IdIssueStatus = {
@@ -503,6 +569,13 @@
             template: SelectForCreateOrUpdate,
             editoptions: {
                 dataUrl: "/Complain/IssueStatusSelectOptions"
+            },
+            
+            @{
+                if (User.IsInRole(CustomRoles.Customer))
+                {
+                    <text>editable:false,</text>
+                }
             }
         };
 
@@ -512,7 +585,30 @@
             template: textColumn,
             editable: false,
             width: 150,
-            minResizeWidth: 150
+            minResizeWidth: 150,
+            formatter: function (cellvalue, options, rowObject) {
+                if (cellvalue == "Open")
+                    return '<span class="cellWithoutBackground" style="background-color:#FF6F6F">' +
+                        cellvalue +
+                        '</span>';
+
+                return '<span>' + cellvalue + '</span>';
+            },
+        };
+
+        const DateFixed = {
+            name: "DateFixed",
+            label: "DateFixed",
+            template: dateColumn,
+            width: 150,
+            minResizeWidth: 150,
+            editrules: { required: false },
+            @{
+                if (User.IsInRole(CustomRoles.Customer))
+                {
+                    <text>editable:false,</text>
+                }
+            }
         };
 
         //const IdComplain = {
@@ -527,7 +623,7 @@
         const Actions = {
             name: "Details",
             label: "Details",
-            formatter: function (cellvalue, option, rowObject) {
+            formatter: function(cellvalue, option, rowObject) {
                 return '<button style="margin-right:2px;" title="Regions" onClick="details();" class="btn-xsm btn-info"><span class="glyphicon glyphicon-tasks" style="font-size:12px"></span></button>';
             },
             editable: false,
@@ -542,7 +638,7 @@
         };
 
         function details() {
-            setTimeout(function () {
+            setTimeout(function() {
                 var selectedRowData = GetSelectedRowData($(complainIssueJqGridId));
                 window.location.href = "/Complain/ComplainIssueDetails?IdComplainIssue=" + selectedRowData.Id;
             });
@@ -552,8 +648,14 @@
             Id,
             Subject,
             Description,
-            IssueStatus,
-            Actions
+            IssueStatus, IdIssueStatus,
+            DateFixed,
+            @{
+                if (!User.IsInRole(CustomRoles.Customer))
+                {
+                    <text>Actions</text>
+                }
+            }
 
         ];
 

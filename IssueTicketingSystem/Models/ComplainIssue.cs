@@ -30,7 +30,7 @@ namespace IssueTicketingSystem.Models
     public class ComplainIssueCommandDto : ComplainIssue
     {
         public int id { get; set; }
-        public DateTime DateFixed { get; set; }
+        public DateTime? DateFixed { get; set; }
 
     }
 
@@ -85,7 +85,6 @@ namespace IssueTicketingSystem.Models
 
             CreateMap<ComplainIssueCommandDto, tbl_complain_issue>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.id))
-                .ForMember(d => d.tbl_additional_payment, o => o.Ignore())
                 .ForMember(d => d.tbl_assigned_service_engineer_to_issue, o => o.Ignore())
                 .ForMember(d => d.tbl_complain, o => o.Ignore())
                 .ForMember(d => d.tbl_issue_status, o => o.Ignore())

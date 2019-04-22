@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using IssueTicketingSystem.Repositories;
 using IssueTicketingSystem.Models;
@@ -25,6 +26,14 @@ namespace IssueTicketingSystem.Repositories
 	            .FirstOrDefault(x => x.Password == password);
 	    }
 
+	    public tbl_account CreateAndReturn(tbl_account entity)
+	    {
+	        entity = ModifyEntityBeforeCreate(entity);
+	        Db.tbl_account.Add(entity);
+	        Db.SaveChanges();
+            return entity;
+	    }
+
 	    protected override tbl_account ModifyEntityBeforeCreate(tbl_account entity)
 	    {
 	        entity.Password= System.Web.Security.Membership.GeneratePassword(10, 3);
@@ -35,6 +44,12 @@ namespace IssueTicketingSystem.Repositories
 	    {
 	        updateSourceEntity.Password = oldEntity.Password;
 	        return updateSourceEntity;
+	    }
+
+	    protected override void ShouldDeleteEntity(tbl_account entity)
+	    {
+	        if(entity.tbl_complain.Count != 0)
+                throw new Exception("There are complains associated with this account.");
 	    }
 	}
 }

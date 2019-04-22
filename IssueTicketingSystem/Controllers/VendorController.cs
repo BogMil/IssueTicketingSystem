@@ -7,7 +7,8 @@ using IssueTicketingSystem.Services.CRUD.Interfaces;
 namespace IssueTicketingSystem.Controllers
 {
     [AuthorizeRoles(
-        CustomRoles.Administrator
+        CustomRoles.Administrator,
+        CustomRoles.User
     )]
     public class VendorController :
             GenericController<IVendorService, VendorViewModel, VendorQueryDto, VendorCommandDto>

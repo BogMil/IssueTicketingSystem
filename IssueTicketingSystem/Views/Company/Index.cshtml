@@ -144,7 +144,8 @@
             label: "Name",
             template: textColumn,
             width: 300,
-            minResizeWidth: 300
+            minResizeWidth: 300,
+            editoptions: { maxlength: 100 },
         };
 
         const Contact = {
@@ -153,9 +154,8 @@
             template: textColumn,
             width: 300,
             minResizeWidth: 300,
-            editrules: {
-                required: false
-            },
+            editrules: { required: false },
+            editoptions: { maxlength: 50 },
             sortable: false
 
         };
@@ -402,7 +402,8 @@
             template: textColumn,
             width: 300,
             minResizeWidth: 300,
-            sortable: false
+            sortable: false,
+            editoptions: { maxlength: 100 },
 
         };
 
