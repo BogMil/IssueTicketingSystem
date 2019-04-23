@@ -283,9 +283,6 @@
     <Compile Include="Models\SelectListItem.cs" />
     <Compile Include="Models\ServiceEngineer.cs" />
     <Compile Include="Models\State.cs" />
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\tbl_account.cs">
       <DependentUpon>IssueTicketingSystemEntities.tt</DependentUpon>
     </Compile>

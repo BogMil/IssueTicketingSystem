@@ -25,7 +25,7 @@ namespace IssueTicketingSystem.Models
         public string Status { get; set; }
         public string Aging { get; set; }
         public string Remark { get; set; }
-        public int IdAccount { get; set; }
+        public Nullable<int> IdAccount { get; set; }
         public int IdTypeOfComplain { get; set; }
         public int IdCompanyBranch { get; set; }
     

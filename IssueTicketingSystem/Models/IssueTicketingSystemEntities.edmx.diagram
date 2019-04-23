@@ -4,8 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c32a7ee8419e4c20a76bc4f46a4fa4a1" Name="Diagram1">
-        <EntityTypeShape EntityType="IssueTicketingSystemModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+      <Diagram DiagramId="d0649b69f2ac4be8912a944ec53bd8bd" Name="Diagram1">
         <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_account" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_assigned_service_engineer_to_issue" Width="1.5" PointX="12.75" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="IssueTicketingSystemModel.tbl_branch" Width="1.5" PointX="3.75" PointY="13.375" IsExpanded="true" />
